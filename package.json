@@ -1,0 +1,15 @@
+{
+  "name": "nexawork-root",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @nexawork/web --filter @nexawork/api dev",
+    "dev:web": "pnpm --filter @nexawork/web dev",
+    "dev:api": "pnpm --filter @nexawork/api dev",
+    "build": "pnpm --filter @nexawork/web build && pnpm --filter @nexawork/api build",
+    "lint": "pnpm --recursive lint"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

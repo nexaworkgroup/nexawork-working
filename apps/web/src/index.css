@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand-green: #1A7A4A;
+    --brand-gold: #E8B84B;
+    --brand-green-light: #E8F5EE;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    @apply font-sans text-gray-900 bg-white antialiased;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4 { @apply font-semibold; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-brand-green text-white px-5 py-2.5 rounded-lg font-medium
+           hover:bg-brand-green-dark active:scale-95 transition-all duration-150
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply border border-brand-green text-brand-green px-5 py-2.5 rounded-lg font-medium
+           hover:bg-brand-green-light active:scale-95 transition-all duration-150;
+  }
+
+  .btn-gold {
+    @apply bg-brand-gold text-white px-5 py-2.5 rounded-lg font-medium
+           hover:bg-brand-gold-dark active:scale-95 transition-all duration-150;
+  }
+
+  .input-field {
+    @apply w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm
+           focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent
+           placeholder:text-gray-400 transition-all;
+  }
+
+  .card {
+    @apply bg-white rounded-xl border border-gray-100 shadow-card p-5;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-green { @apply badge bg-brand-green-light text-brand-green; }
+  .badge-gold  { @apply badge bg-brand-gold-light text-brand-gold-dark; }
+  .badge-gray  { @apply badge bg-gray-100 text-gray-600; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #1A7A4A40; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #1A7A4A; }
+
+/* Mobile nav safe area */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* Extra bottom padding on mobile for fixed nav */
+@media (max-width: 768px) {
+  main { padding-bottom: 80px; }
+}
