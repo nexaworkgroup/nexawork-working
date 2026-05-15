@@ -165,6 +165,28 @@ export async function seekerRoutes(app: FastifyInstance) {
     return reply.send({ success: true })
   })
 
+
+  // DELETE /applications/:appId — withdraw application
+  app.delete('/applications/:appId', { preHandler: requireRole('job_seeker') }, async (request, reply) => {
+    const { appId } = request.params as { appId: string }
+    const { id } = request.user!
+    const profile = await getOrCreateSeekerProfile(id)
+    if (!profile) return reply.status(404).send({ error: 'Profile not found' })
+
+    // Only allow withdrawal if status is applied or viewed
+    const { data: app } = await supabase
+      .from('applications').select('status, seeker_id').eq('id', appId).single()
+
+    if (!app) return reply.status(404).send({ error: 'Application not found' })
+    if (app.seeker_id !== profile.id) return reply.status(403).send({ error: 'Not your application' })
+    if (!['applied', 'viewed'].includes(app.status)) {
+      return reply.status(400).send({ error: 'Cannot withdraw — application is already in progress' })
+    }
+
+    await supabase.from('applications').delete().eq('id', appId)
+    console.log('[Withdraw] Application', appId, 'withdrawn by', id)
+    return reply.send({ success: true })
+  })
   // GET /skills
   app.get('/skills', async (_request, reply) => {
     const { data } = await supabase.from('skills').select('*').order('category').order('name')
@@ -197,3 +219,5 @@ async function embedSeekerProfile(userId: string, profile: any) {
       .update({ embedding: res.data[0].embedding as any }).eq('user_id', userId)
   } catch (e) { console.error('Seeker embedding failed:', e) }
 }
+
+// DELETE /applications/:appId — withdraw application

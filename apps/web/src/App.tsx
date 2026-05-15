@@ -3,11 +3,14 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { supabase } from './lib/supabase'
 import { api } from './lib/api'
 import { useAuthStore, UserRole } from './store/authStore'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import AppLayout from './components/layout/AppLayout'
 import MobileNav from './components/layout/MobileNav'
 import LandingPage from './pages/Landing'
 import LoginPage from './pages/Login'
 import RegisterPage from './pages/Register'
+import ForgotPasswordPage from './pages/ForgotPassword'
+import ResetPasswordPage from './pages/ResetPassword'
 import OnboardingPage from './pages/onboarding/Index'
 import DashboardPage from './pages/Dashboard'
 import JobsPage from './pages/Jobs'
@@ -19,8 +22,10 @@ import ProfilePage from './pages/Profile'
 import CVBuilderPage from './pages/CVBuilder'
 import EmployerDashboard from './pages/employer/Dashboard'
 import PostJobPage from './pages/employer/PostJob'
+import EditJobPage from './pages/employer/EditJob'
 import CandidatesPage from './pages/employer/Candidates'
 import ApplicantsPage from './pages/employer/Applicants'
+import EmployerJobsPage from './pages/employer/Jobs'
 import FloatingChat from './components/FloatingChat'
 
 function FullPageLoader() {
@@ -87,43 +92,68 @@ export default function App() {
       } catch {}
       finally { if (mounted) setInitialized(true) }
     }
+
     initAuth()
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_OUT') { if (mounted) { setUser(null); setProfile(null) } }
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        if (mounted) { setUser(null); setProfile(null) }
+      }
+      // Handle token refresh silently
+      if (event === 'TOKEN_REFRESHED' && session?.user) {
+        if (mounted) setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          role: (session.user.user_metadata?.role as UserRole) || 'job_seeker',
+          lang_preference: 'en'
+        })
+      }
     })
+
     return () => { mounted = false; subscription.unsubscribe() }
   }, [])
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/jobs/:id" element={<JobDetailPage />} />
-        <Route path="/onboarding" element={<RequireAuth><OnboardingPage /></RequireAuth>} />
+    <ErrorBoundary>
+      <BrowserRouter>
+        <Routes>
+          {/* Public */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/jobs/:id" element={<JobDetailPage />} />
 
-        <Route element={<RequireOnboarding><AppLayout /></RequireOnboarding>}>
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/jobs" element={<JobsPage />} />
-          <Route path="/applications" element={<ApplicationsPage />} />
-          <Route path="/saved" element={<SavedJobsPage />} />
-          <Route path="/chat" element={<ChatPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/cv-builder" element={<CVBuilderPage />} />
-        </Route>
+          {/* Onboarding */}
+          <Route path="/onboarding" element={<RequireAuth><OnboardingPage /></RequireAuth>} />
 
-        <Route element={<RequireEmployer><AppLayout /></RequireEmployer>}>
-          <Route path="/employer/dashboard" element={<EmployerDashboard />} />
+          {/* Seeker */}
+          <Route element={<RequireOnboarding><AppLayout /></RequireOnboarding>}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/jobs" element={<JobsPage />} />
+            <Route path="/applications" element={<ApplicationsPage />} />
+            <Route path="/saved" element={<SavedJobsPage />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/cv-builder" element={<CVBuilderPage />} />
+          </Route>
+
+          {/* Employer */}
+          <Route element={<RequireEmployer><AppLayout /></RequireEmployer>}>
+            <Route path="/employer/dashboard" element={<EmployerDashboard />} />
+            <Route path="/employer/jobs" element={<EmployerJobsPage />} />
           <Route path="/employer/jobs/new" element={<PostJobPage />} />
-          <Route path="/employer/jobs/:jobId/candidates" element={<CandidatesPage />} />
-          <Route path="/employer/applicants" element={<ApplicantsPage />} />
-        </Route>
+            <Route path="/employer/jobs/:jobId/edit" element={<EditJobPage />} />
+            <Route path="/employer/jobs/:jobId/candidates" element={<CandidatesPage />} />
+            <Route path="/employer/applicants" element={<ApplicantsPage />} />
+          </Route>
 
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-      <FloatingChat />
-      <MobileNav />
-    </BrowserRouter>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+        <FloatingChat />
+        <MobileNav />
+      </BrowserRouter>
+    </ErrorBoundary>
   )
 }

@@ -29,6 +29,7 @@ export default function AppLayout() {
 
   const employerLinks = [
     { to: '/employer/dashboard',  icon: LayoutDashboard, label: 'Dashboard' },
+    { to: '/employer/jobs',       icon: Briefcase,       label: 'My Jobs' },
     { to: '/employer/jobs/new',   icon: PlusCircle,      label: 'Post a Job' },
     { to: '/employer/applicants', icon: Users,           label: 'All Applicants' },
     { to: '/chat',                icon: MessageSquare,   label: 'AI Assistant' },

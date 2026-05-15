@@ -95,9 +95,13 @@ export default function EmployerDashboard() {
                     {job.is_active ? 'Active' : 'Closed'}
                   </span>
                   <button onClick={() => navigate(`/employer/jobs/${job.id}/candidates`)}
-                    className="btn-secondary text-sm px-4 py-1.5 flex items-center gap-1.5">
+                    className="btn-secondary text-sm px-3 py-1.5 flex items-center gap-1.5">
                     <Users size={14} />
-                    {Array.isArray(job.applications) ? job.applications[0]?.count || 0 : 0} Candidates
+                    {Array.isArray(job.applications) ? job.applications[0]?.count || 0 : 0}
+                  </button>
+                  <button onClick={() => navigate(`/employer/jobs/${job.id}/edit`)}
+                    className="text-xs text-gray-400 hover:text-brand-green px-2 py-1.5 rounded-lg hover:bg-brand-green-light transition-colors">
+                    Edit
                   </button>
                 </div>
               </div>

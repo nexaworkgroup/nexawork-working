@@ -4,11 +4,13 @@ import { useTranslation } from 'react-i18next'
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuthStore, UserRole } from '../store/authStore'
+import { useToast } from '../components/Toast'
 
 export default function LoginPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { setUser, setProfile, setInitialized } = useAuthStore()
+  const { success, error: toastError } = useToast()
   const submitting = useRef(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -28,26 +30,39 @@ export default function LoginPage() {
       if (authErr) throw authErr
 
       const userRole = (data.user?.user_metadata?.role as UserRole) || 'job_seeker'
-      setUser({ id: data.user.id, email: data.user.email || email, role: userRole, lang_preference: 'en' })
-      setInitialized(true)
 
-      // Check if profile is complete to decide where to navigate
+      // Set basic user immediately
+      setUser({
+        id: data.user.id,
+        email: data.user.email || email,
+        role: userRole,
+        lang_preference: 'en'
+      })
+
+      // Fetch profile from Supabase directly — MUST happen before navigate
       let profileComplete = false
       try {
         const table = userRole === 'employer' ? 'profiles_employer' : 'profiles_seeker'
-        const field = userRole === 'employer' ? 'company_name' : 'full_name'
-        const { data: profile } = await supabase
+        const nameField = userRole === 'employer' ? 'company_name' : 'full_name'
+
+        const { data: profileData } = await supabase
           .from(table)
           .select('*')
           .eq('user_id', data.user.id)
           .single()
 
-        if (profile) {
-          setProfile(profile)
-          profileComplete = !!(profile as any)[field]
+        if (profileData) {
+          setProfile(profileData)
+          profileComplete = !!(profileData as any)[nameField]
         }
-      } catch { /* profile doesn't exist yet */ }
+      } catch {
+        // Profile doesn't exist yet — needs onboarding
+      }
 
+      setInitialized(true)
+      success('Welcome back! 👋')
+
+      // Navigate based on profile completion
       if (!profileComplete) {
         navigate('/onboarding', { replace: true })
       } else if (userRole === 'employer') {
@@ -57,6 +72,7 @@ export default function LoginPage() {
       }
     } catch (err: any) {
       setError(err.message || t('auth.error_invalid'))
+      toastError('Sign in failed — check your credentials')
       setLoading(false)
       submitting.current = false
     }
@@ -87,7 +103,9 @@ export default function LoginPage() {
             <p className="text-gray-400 mt-1">{t('auth.login_subtitle')}</p>
           </div>
 
-          {error && <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-lg text-sm text-red-600">{error}</div>}
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-lg text-sm text-red-600">{error}</div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -96,7 +114,12 @@ export default function LoginPage() {
                 className="input-field" placeholder="you@example.com" required autoComplete="email" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('auth.password')}</label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-sm font-medium text-gray-700">{t('auth.password')}</label>
+                <Link to="/forgot-password" className="text-xs text-brand-green hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
               <div className="relative">
                 <input type={showPass ? 'text' : 'password'} value={password}
                   onChange={e => setPassword(e.target.value)}
