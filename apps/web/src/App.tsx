@@ -27,6 +27,7 @@ import CandidatesPage from './pages/employer/Candidates'
 import ApplicantsPage from './pages/employer/Applicants'
 import EmployerJobsPage from './pages/employer/Jobs'
 import FloatingChat from './components/FloatingChat'
+import AdminDashboardPage from './pages/admin/Dashboard'
 import SkillGapPage from './pages/SkillGap'
 import JobAlertsPage from './pages/JobAlerts'
 import InterviewsPage from './pages/Interviews'
@@ -163,6 +164,7 @@ export default function App() {
           </Route>
 
           <Route path="/company/:companyId" element={<CompanyProfilePage />} />
+        <Route path="/admin" element={<AdminDashboardPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
