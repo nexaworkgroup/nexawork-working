@@ -1,14 +1,15 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom'
+import { Outlet, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
   LayoutDashboard, Briefcase, FileText, Bookmark,
   User, LogOut, Globe, Users, PlusCircle,
-  MessageSquare, FilePlus2
+  MessageSquare, FilePlus2, Target
 } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 import { api } from '../../lib/api'
 import { clsx } from 'clsx'
 import { useState } from 'react'
+import NotificationBell from '../NotificationBell'
 
 export default function AppLayout() {
   const { user, profile, signOut } = useAuthStore()
@@ -18,22 +19,23 @@ export default function AppLayout() {
   const isEmployer = user?.role === 'employer'
 
   const seekerLinks = [
-    { to: '/dashboard',    icon: LayoutDashboard, label: 'Home' },
-    { to: '/jobs',         icon: Briefcase,       label: 'Jobs' },
-    { to: '/applications', icon: FileText,        label: 'Applications' },
-    { to: '/saved',        icon: Bookmark,        label: 'Saved Jobs' },
-    { to: '/cv-builder',   icon: FilePlus2,       label: 'Build CV' },
-    { to: '/chat',         icon: MessageSquare,   label: 'AI Assistant' },
-    { to: '/profile',      icon: User,            label: 'Profile' },
+    { to: '/dashboard',    icon: LayoutDashboard, label: t('nav.home') },
+    { to: '/jobs',         icon: Briefcase,       label: t('nav.jobs') },
+    { to: '/applications', icon: FileText,        label: t('nav.applications') },
+    { to: '/saved',        icon: Bookmark,        label: t('nav.saved') },
+    { to: '/cv-builder',   icon: FilePlus2,       label: t('nav.build_cv') },
+    { to: '/skill-gap',    icon: Target,          label: t('nav.skill_gap') },
+    { to: '/chat',         icon: MessageSquare,   label: t('nav.chat') },
+    { to: '/profile',      icon: User,            label: t('nav.profile') },
   ]
 
   const employerLinks = [
-    { to: '/employer/dashboard',  icon: LayoutDashboard, label: 'Dashboard' },
-    { to: '/employer/jobs',       icon: Briefcase,       label: 'My Jobs' },
-    { to: '/employer/jobs/new',   icon: PlusCircle,      label: 'Post a Job' },
-    { to: '/employer/applicants', icon: Users,           label: 'All Applicants' },
-    { to: '/chat',                icon: MessageSquare,   label: 'AI Assistant' },
-    { to: '/profile',             icon: User,            label: 'Company Profile' },
+    { to: '/employer/dashboard',  icon: LayoutDashboard, label: t('nav.dashboard') },
+    { to: '/employer/jobs',       icon: Briefcase,       label: t('nav.my_jobs') },
+    { to: '/employer/jobs/new',   icon: PlusCircle,      label: t('nav.post_job') },
+    { to: '/employer/applicants', icon: Users,           label: t('nav.applicants') },
+    { to: '/chat',                icon: MessageSquare,   label: t('nav.chat') },
+    { to: '/profile',             icon: User,            label: t('nav.company_profile') },
   ]
 
   const links = isEmployer ? employerLinks : seekerLinks
@@ -51,17 +53,20 @@ export default function AppLayout() {
 
   const Sidebar = () => (
     <div className="flex flex-col h-full">
-      {/* Logo */}
-      <div className="px-6 py-5 border-b border-gray-100">
-        <span className="text-2xl font-bold">
+      {/* Logo + bell */}
+      <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+        <span className="text-xl font-bold">
           <span className="text-brand-green">Nexa</span>
           <span className="text-gray-900">Work</span>
         </span>
-        {isEmployer && (
-          <span className="ml-2 text-xs bg-brand-gold-light text-brand-gold-dark px-2 py-0.5 rounded-full font-medium">
-            Employer
-          </span>
-        )}
+        <div className="flex items-center gap-1">
+          {isEmployer && (
+            <span className="text-xs bg-brand-gold-light text-brand-gold-dark px-2 py-0.5 rounded-full font-medium">
+              Pro
+            </span>
+          )}
+          <NotificationBell />
+        </div>
       </div>
 
       {/* Nav links */}
@@ -84,12 +89,12 @@ export default function AppLayout() {
         ))}
       </nav>
 
-      {/* Bottom section */}
+      {/* Bottom */}
       <div className="px-3 py-4 border-t border-gray-100 space-y-0.5">
         <button onClick={toggleLang}
           className="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all">
           <Globe size={18} />
-          <span>{i18n.language === 'en' ? 'Français' : 'English'}</span>
+          <span>{i18n.language === 'en' ? 'Français 🇫🇷' : 'English 🇬🇧'}</span>
         </button>
 
         <div className="flex items-center gap-3 px-4 py-2.5 rounded-lg">
@@ -100,7 +105,7 @@ export default function AppLayout() {
             <p className="text-sm font-medium text-gray-900 truncate">{displayName}</p>
             <p className="text-xs text-gray-400 truncate">{user?.email}</p>
           </div>
-          <button onClick={() => signOut()} className="text-gray-400 hover:text-red-500 transition-colors" title="Sign out">
+          <button onClick={() => signOut()} className="text-gray-400 hover:text-red-500 transition-colors" title={t('nav.logout')}>
             <LogOut size={16} />
           </button>
         </div>
@@ -115,7 +120,7 @@ export default function AppLayout() {
         <Sidebar />
       </aside>
 
-      {/* Mobile sidebar overlay */}
+      {/* Mobile overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
@@ -125,7 +130,7 @@ export default function AppLayout() {
         </div>
       )}
 
-      {/* Main area */}
+      {/* Main */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Mobile top bar */}
         <header className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100">
@@ -140,7 +145,7 @@ export default function AppLayout() {
             <span className="text-brand-green">Nexa</span>
             <span className="text-gray-900">Work</span>
           </span>
-          <div className="w-9" />
+          <NotificationBell />
         </header>
 
         <main className="flex-1 overflow-y-auto">

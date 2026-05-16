@@ -27,6 +27,9 @@ import CandidatesPage from './pages/employer/Candidates'
 import ApplicantsPage from './pages/employer/Applicants'
 import EmployerJobsPage from './pages/employer/Jobs'
 import FloatingChat from './components/FloatingChat'
+import SkillGapPage from './pages/SkillGap'
+import TermsPage from './pages/Terms'
+import PrivacyPage from './pages/Privacy'
 
 function FullPageLoader() {
   return (
@@ -137,6 +140,7 @@ export default function App() {
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/cv-builder" element={<CVBuilderPage />} />
+          <Route path="/skill-gap" element={<SkillGapPage />} />
           </Route>
 
           {/* Employer */}
@@ -149,7 +153,9 @@ export default function App() {
             <Route path="/employer/applicants" element={<ApplicantsPage />} />
           </Route>
 
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <FloatingChat />
         <MobileNav />

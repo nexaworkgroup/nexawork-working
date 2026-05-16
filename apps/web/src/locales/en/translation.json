@@ -8,7 +8,15 @@
     "dashboard": "Dashboard",
     "logout": "Sign Out",
     "login": "Sign In",
-    "register": "Get Started"
+    "register": "Get Started",
+    "saved": "Saved Jobs",
+    "build_cv": "Build CV",
+    "skill_gap": "Skill Gap",
+    "my_jobs": "My Jobs",
+    "post_job": "Post a Job",
+    "applicants": "All Applicants",
+    "company_profile": "Company Profile",
+    "notifications": "Notifications"
   },
   "landing": {
     "hero_title": "Your First Job",
@@ -123,7 +131,12 @@
     "placeholder": "Ask me anything — find jobs, get CV tips, interview prep...",
     "welcome": "Hi! I'm your NexaWork AI assistant. I can help you find jobs, improve your profile, or prepare for interviews. What would you like to do?",
     "send": "Send",
-    "suggestions": ["Find me jobs in my field", "How can I improve my profile?", "Help me prepare for an interview", "What skills should I learn?"]
+    "suggestions": [
+      "Find me jobs in my field",
+      "How can I improve my profile?",
+      "Help me prepare for an interview",
+      "What skills should I learn?"
+    ]
   },
   "common": {
     "loading": "Loading...",

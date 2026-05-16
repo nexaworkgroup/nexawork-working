@@ -8,7 +8,15 @@
     "dashboard": "Tableau de bord",
     "logout": "Se déconnecter",
     "login": "Se connecter",
-    "register": "Commencer"
+    "register": "Commencer",
+    "saved": "Emplois Sauvegardés",
+    "build_cv": "Créer CV",
+    "skill_gap": "Écart de Compétences",
+    "my_jobs": "Mes Offres",
+    "post_job": "Publier une Offre",
+    "applicants": "Tous les Candidats",
+    "company_profile": "Profil Entreprise",
+    "notifications": "Notifications"
   },
   "landing": {
     "hero_title": "Votre Premier Emploi",
@@ -123,7 +131,12 @@
     "placeholder": "Posez-moi n'importe quelle question — trouver des emplois, conseils CV, préparation entretien...",
     "welcome": "Bonjour ! Je suis votre assistant IA NexaWork. Je peux vous aider à trouver des emplois, améliorer votre profil ou préparer vos entretiens. Que souhaitez-vous faire ?",
     "send": "Envoyer",
-    "suggestions": ["Trouver des emplois dans mon domaine", "Comment améliorer mon profil ?", "Aidez-moi à préparer un entretien", "Quelles compétences devrais-je acquérir ?"]
+    "suggestions": [
+      "Trouver des emplois dans mon domaine",
+      "Comment améliorer mon profil ?",
+      "Aidez-moi à préparer un entretien",
+      "Quelles compétences devrais-je acquérir ?"
+    ]
   },
   "common": {
     "loading": "Chargement...",
