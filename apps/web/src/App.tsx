@@ -28,6 +28,11 @@ import ApplicantsPage from './pages/employer/Applicants'
 import EmployerJobsPage from './pages/employer/Jobs'
 import FloatingChat from './components/FloatingChat'
 import SkillGapPage from './pages/SkillGap'
+import JobAlertsPage from './pages/JobAlerts'
+import InterviewsPage from './pages/Interviews'
+import CompanyProfilePage from './pages/CompanyProfile'
+import ScheduleInterviewPage from './pages/employer/ScheduleInterview'
+import EmployerInterviewsPage from './pages/employer/Interviews'
 import TermsPage from './pages/Terms'
 import PrivacyPage from './pages/Privacy'
 
@@ -141,6 +146,8 @@ export default function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/cv-builder" element={<CVBuilderPage />} />
           <Route path="/skill-gap" element={<SkillGapPage />} />
+          <Route path="/job-alerts" element={<JobAlertsPage />} />
+          <Route path="/interviews" element={<InterviewsPage />} />
           </Route>
 
           {/* Employer */}
@@ -151,9 +158,12 @@ export default function App() {
             <Route path="/employer/jobs/:jobId/edit" element={<EditJobPage />} />
             <Route path="/employer/jobs/:jobId/candidates" element={<CandidatesPage />} />
             <Route path="/employer/applicants" element={<ApplicantsPage />} />
+          <Route path="/employer/interviews" element={<EmployerInterviewsPage />} />
+          <Route path="/employer/interviews/schedule/:appId" element={<ScheduleInterviewPage />} />
           </Route>
 
-          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/company/:companyId" element={<CompanyProfilePage />} />
+        <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

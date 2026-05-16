@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { MapPin, Clock, Wifi, BookmarkPlus, BookmarkCheck, ExternalLink, Zap } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
+import { MapPin, Clock, BookmarkPlus, BookmarkCheck, Zap, Share2 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { api } from '../../lib/api'
 import { useAuthStore } from '../../store/authStore'
+import { useNavigate } from 'react-router-dom'
 
 export interface Job {
   id: string
@@ -26,23 +26,14 @@ export interface Job {
 export interface JobCardProps {
   job: Job
   onApply?: (job: Job) => void
-  isSaved?: boolean
   onSaveToggle?: (jobId: string, saved: boolean) => void
   compact?: boolean
 }
 
-const JOB_TYPE_COLOURS: Record<string, string> = {
-  internship: 'badge-gold',
-  graduate_scheme: 'badge-green',
-  full_time: 'badge-gray',
-  part_time: 'badge-gray',
-  contract: 'badge-gray',
-}
-
-export default function JobCard({ job, onApply, isSaved = false, onSaveToggle, compact }: JobCardProps) {
-  const { t } = useTranslation()
+export default function JobCard({ job, onApply, onSaveToggle, compact }: JobCardProps) {
   const { user } = useAuthStore()
-  const [saved, setSaved] = useState(isSaved)
+  const navigate = useNavigate()
+  const [saved, setSaved] = useState(false)
   const [savingState, setSavingState] = useState(false)
 
   const score = job.match_score
@@ -68,79 +59,71 @@ export default function JobCard({ job, onApply, isSaved = false, onSaveToggle, c
     setSavingState(false)
   }
 
+  const handleShare = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    const text = `🚀 ${job.title} at ${job.company_name}${job.location ? ` — ${job.location}` : ''}\n\nApply on NexaWork 👇\n${window.location.origin}/jobs/${job.id}`
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer')
+  }
+
   const postedDate = new Date(job.posted_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 
   return (
-    <div className={clsx(
-      'card hover:shadow-card-hover transition-all duration-200 cursor-pointer group',
-      compact && 'p-4'
-    )}>
+    <div
+      onClick={() => navigate(`/jobs/${job.id}`)}
+      className={clsx('card hover:shadow-card-hover transition-all duration-200 cursor-pointer group', compact && 'p-4')}
+    >
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="w-10 h-10 rounded-lg bg-brand-green-light flex items-center justify-center flex-shrink-0 text-brand-green font-bold text-sm">
-          {job.company_name.charAt(0).toUpperCase()}
+          {job.company_name?.charAt(0)?.toUpperCase()}
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-gray-900 text-sm leading-tight truncate group-hover:text-brand-green transition-colors">
             {job.title}
           </h3>
-          <p className="text-sm text-gray-500 truncate">{job.company_name}</p>
+          <p className="text-xs text-gray-500 truncate">{job.company_name}</p>
         </div>
         {score !== undefined && score > 0 && (
-          <div className={clsx('flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold flex-shrink-0', scoreColor)}>
-            <Zap size={11} />
-            {score}%
+          <div className={clsx('flex items-center gap-0.5 px-2 py-1 rounded-full text-xs font-bold flex-shrink-0', scoreColor)}>
+            <Zap size={10} />{score}%
           </div>
         )}
       </div>
 
       <div className="flex flex-wrap gap-1.5 mb-3">
         {job.job_type && (
-          <span className={clsx('badge text-xs', JOB_TYPE_COLOURS[job.job_type] || 'badge-gray')}>
-            {t(`jobs.${job.job_type}` as any, job.job_type)}
-          </span>
+          <span className="badge badge-gold text-xs capitalize">{job.job_type.replace('_', ' ')}</span>
         )}
-        {job.is_remote && <span className="badge badge-green">{t('jobs.remote')}</span>}
+        {job.is_remote && <span className="badge badge-green text-xs">Remote</span>}
         {job.experience_level && job.experience_level !== 'any' && (
-          <span className="badge badge-gray">{t(`jobs.${job.experience_level}` as any, job.experience_level)}</span>
+          <span className="badge badge-gray text-xs capitalize">{job.experience_level}</span>
         )}
       </div>
 
       <div className="flex items-center gap-3 text-xs text-gray-400 mb-4">
-        {job.location && (
-          <span className="flex items-center gap-1"><MapPin size={12} /> {job.location}</span>
-        )}
-        <span className="flex items-center gap-1"><Clock size={12} /> {postedDate}</span>
-        {job.source !== 'native' && (
-          <span className="flex items-center gap-1 ml-auto">
-            <ExternalLink size={11} />
-            <span className="capitalize">{job.source.replace('scraped_', '').replace('_', ' ')}</span>
-          </span>
-        )}
+        {job.location && <span className="flex items-center gap-1 truncate"><MapPin size={11} />{job.location}</span>}
+        <span className="flex items-center gap-1 flex-shrink-0"><Clock size={11} />{postedDate}</span>
       </div>
 
       {(job.salary_min || job.salary_max) && (
-        <p className="text-sm font-medium text-brand-green mb-4">
-          {job.salary_min && job.salary_max
-            ? `${job.salary_min.toLocaleString()} – ${job.salary_max.toLocaleString()} ${job.salary_currency}`
-            : job.salary_min
-            ? `From ${job.salary_min.toLocaleString()} ${job.salary_currency}`
-            : `Up to ${job.salary_max?.toLocaleString()} ${job.salary_currency}`}
+        <p className="text-xs font-semibold text-brand-green mb-3">
+          {job.salary_min?.toLocaleString()} – {job.salary_max?.toLocaleString()} {job.salary_currency}
         </p>
       )}
 
-      <div className="flex gap-2">
+      <div className="flex gap-2" onClick={e => e.stopPropagation()}>
         <button onClick={() => onApply?.(job)} className="btn-primary flex-1 text-sm py-2">
-          {t('jobs.apply')}
+          Apply Now
         </button>
+        {/* WhatsApp share */}
+        <button onClick={handleShare}
+          className="p-2 rounded-lg border border-gray-200 hover:border-green-400 hover:text-green-600 text-gray-400 transition-all" title="Share on WhatsApp">
+          <Share2 size={16} />
+        </button>
+        {/* Save */}
         {user?.role === 'job_seeker' && (
-          <button
-            onClick={handleSave}
-            disabled={savingState}
-            className="p-2 rounded-lg border border-gray-200 hover:border-brand-green hover:text-brand-green transition-all"
-          >
-            {saved
-              ? <BookmarkCheck size={18} className="text-brand-green" />
-              : <BookmarkPlus size={18} />}
+          <button onClick={handleSave} disabled={savingState}
+            className="p-2 rounded-lg border border-gray-200 hover:border-brand-green hover:text-brand-green text-gray-400 transition-all">
+            {saved ? <BookmarkCheck size={16} className="text-brand-green" /> : <BookmarkPlus size={16} />}
           </button>
         )}
       </div>

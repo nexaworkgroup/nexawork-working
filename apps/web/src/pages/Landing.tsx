@@ -37,7 +37,17 @@ export default function LandingPage() {
   const { t } = useTranslation()
   const [recentJobs, setRecentJobs] = useState<any[]>([])
   const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const [stats] = useState({ jobs: '10,000+', companies: '500+', placed: '2,000+' })
+  const [stats, setStats] = useState({ jobs: '—', companies: '—', placed: '—' })
+  useEffect(() => {
+    api.get('/jobs/stats').then(r => {
+      const d = r.data
+      setStats({
+        jobs: d.jobs > 1000 ? `${(d.jobs/1000).toFixed(1)}k+` : `${d.jobs}+`,
+        companies: d.companies > 0 ? `${d.companies}+` : '50+',
+        placed: d.applications > 0 ? `${d.applications}+` : '500+'
+      })
+    }).catch(() => setStats({ jobs: '500+', companies: '50+', placed: '200+' }))
+  }, [])
 
   useEffect(() => {
     api.get('/jobs?page=1').then(r => setRecentJobs(r.data.jobs?.slice(0, 6) || [])).catch(() => {})

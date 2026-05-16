@@ -199,6 +199,21 @@ export default function ProfilePage() {
             <textarea value={form.bio || ''} onChange={e => setForm((p: any) => ({ ...p, bio: e.target.value }))}
               rows={3} className="input-field resize-none" placeholder="Tell employers about yourself and your goals..." />
           </div>
+          {/* Open to Work toggle */}
+          <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 cursor-pointer hover:border-brand-green transition-colors">
+            <div className={`relative w-11 h-6 rounded-full transition-colors flex-shrink-0 ${form.is_open_to_work ? 'bg-brand-green' : 'bg-gray-200'}`}>
+              <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${form.is_open_to_work ? 'translate-x-5' : 'translate-x-0.5'}`} />
+            </div>
+            <input type="checkbox" className="hidden" checked={form.is_open_to_work || false}
+              onChange={e => setForm((p: any) => ({ ...p, is_open_to_work: e.target.checked }))} />
+            <div>
+              <p className="text-sm font-medium text-gray-900">Open to Work</p>
+              <p className="text-xs text-gray-400">Let employers know you're actively looking for opportunities</p>
+            </div>
+            {form.is_open_to_work && (
+              <span className="ml-auto badge badge-green text-xs flex-shrink-0">🟢 Active</span>
+            )}
+          </label>
         </div>
       </div>
 

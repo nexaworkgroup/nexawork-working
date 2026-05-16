@@ -44,11 +44,18 @@ export default function DashboardPage() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       {/* Greeting */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">
-          {name ? `Welcome back, ${name} 👋` : 'Welcome to NexaWork 🎉'}
-        </h1>
-        <p className="text-gray-400 mt-1 text-sm">Your personalised job feed — updated every 6 hours</p>
+      <div className="mb-6 flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">
+            {name ? `Welcome back, ${name} 👋` : 'Welcome to NexaWork 🎉'}
+          </h1>
+          <p className="text-gray-400 mt-1 text-sm">Your personalised job feed — updated every 6 hours</p>
+        </div>
+        {(profile as any)?.is_open_to_work && (
+          <span className="flex-shrink-0 flex items-center gap-1.5 bg-brand-green-light text-brand-green text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-green/20">
+            🟢 Open to Work
+          </span>
+        )}
       </div>
 
       {/* Quick actions grid */}

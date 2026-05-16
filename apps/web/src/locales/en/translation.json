@@ -16,7 +16,9 @@
     "post_job": "Post a Job",
     "applicants": "All Applicants",
     "company_profile": "Company Profile",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "job_alerts": "Job Alerts",
+    "interviews": "Interviews"
   },
   "landing": {
     "hero_title": "Your First Job",

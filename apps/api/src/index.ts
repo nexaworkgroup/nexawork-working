@@ -11,6 +11,9 @@ import { aiRoutes } from './routes/ai.js'
 import { adminRoutes } from './routes/admin.js'
 import { startScheduler } from './services/scheduler.js'
 import { notificationRoutes } from './routes/notifications.js'
+import { alertRoutes } from './routes/alerts.js'
+import { interviewRoutes } from './routes/interviews.js'
+import { companyRoutes } from './routes/companies.js'
 
 const app = Fastify({ logger: false })
 
@@ -49,6 +52,9 @@ async function main() {
   await app.register(aiRoutes)
   await app.register(adminRoutes)
   await app.register(notificationRoutes)
+  await app.register(alertRoutes)
+  await app.register(interviewRoutes)
+  await app.register(companyRoutes)
 
   app.setErrorHandler((error, _request, reply) => {
     console.error('API Error:', error)

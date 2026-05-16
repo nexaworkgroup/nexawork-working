@@ -3,43 +3,36 @@ import { authenticate } from '../middleware/authenticate.js'
 import { supabase } from '../lib/supabase.js'
 
 export async function authRoutes(app: FastifyInstance) {
-  // GET /auth/me — returns current user + profile
-  app.get('/auth/me', { preHandler: authenticate }, async (request, reply) => {
-    const { id, role } = request.user!
 
+  // GET /auth/me — upsert user + return profile
+  app.get('/auth/me', { preHandler: authenticate }, async (request, reply) => {
+    const { id, email, role } = request.user!
+
+    // Upsert user record
+    const { data: user } = await supabase.from('users')
+      .upsert({ id, email, role, updated_at: new Date().toISOString() }, { onConflict: 'id' })
+      .select().single()
+
+    // Load profile based on role
     let profile = null
-    if (role === 'job_seeker') {
-      const { data } = await supabase
-        .from('profiles_seeker')
-        .select('*')
-        .eq('user_id', id)
-        .single()
+    if (role === 'employer') {
+      const { data } = await supabase.from('profiles_employer').select('*').eq('user_id', id).single()
       profile = data
-    } else if (role === 'employer') {
-      const { data } = await supabase
-        .from('profiles_employer')
-        .select('*')
-        .eq('user_id', id)
-        .single()
+    } else {
+      const { data } = await supabase.from('profiles_seeker')
+        .select('*, seeker_skills(*, skills(*))')
+        .eq('user_id', id).single()
       profile = data
     }
 
-    return reply.send({ user: request.user, profile })
+    return reply.send({ user: user || { id, email, role, lang_preference: 'en' }, profile })
   })
 
-  // PUT /auth/language — update language preference
+  // PUT /auth/language
   app.put('/auth/language', { preHandler: authenticate }, async (request, reply) => {
-    const { lang } = request.body as { lang: 'en' | 'fr' }
-    if (!['en', 'fr'].includes(lang)) {
-      return reply.status(400).send({ error: 'Language must be en or fr' })
-    }
-
-    const { error } = await supabase
-      .from('users')
-      .update({ lang_preference: lang })
-      .eq('id', request.user!.id)
-
-    if (error) return reply.status(500).send({ error: error.message })
-    return reply.send({ success: true, lang })
+    const { id } = request.user!
+    const { lang } = request.body as { lang: string }
+    await supabase.from('users').update({ lang_preference: lang }).eq('id', id)
+    return reply.send({ success: true })
   })
 }

@@ -16,7 +16,9 @@
     "post_job": "Publier une Offre",
     "applicants": "Tous les Candidats",
     "company_profile": "Profil Entreprise",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "job_alerts": "Alertes Emploi",
+    "interviews": "Entretiens"
   },
   "landing": {
     "hero_title": "Votre Premier Emploi",
