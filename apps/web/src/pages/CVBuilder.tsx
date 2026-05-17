@@ -45,16 +45,20 @@ export default function CVBuilderPage() {
   const [generating, setGenerating] = useState(false)
   const [cvHtml, setCvHtml] = useState('')
   const [done, setDone] = useState(false)
+  const [error, setError] = useState('')
 
   const update = (val: string) => setAnswers(prev => { const a = [...prev]; a[step] = val; return a })
 
   const handleGenerate = async () => {
     setGenerating(true)
+    setError('')
     try {
       const res = await api.post('/ai/generate-cv', { answers })
       setCvHtml(res.data.cv_html)
       setDone(true)
-    } catch (e) { console.error(e) }
+    } catch (e: any) {
+      setError(e.message || 'Failed to generate CV. Please check your internet connection and try again.')
+    }
     setGenerating(false)
   }
 
@@ -145,6 +149,12 @@ export default function CVBuilderPage() {
         ))}
       </div>
 
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-xl text-sm text-red-600 flex items-start gap-2">
+          <span className="flex-shrink-0">⚠️</span>
+          <span>{error}</span>
+        </div>
+      )}
       <div className="card">
         <div className="flex items-center gap-2.5 mb-1">
           <div className="w-7 h-7 bg-brand-green text-white rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0">

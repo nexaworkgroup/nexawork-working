@@ -6,6 +6,7 @@ import {
   MessageSquare, FilePlus2, Target, Bell, Calendar
 } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
+import { supabase } from '../../lib/supabase'
 import { api } from '../../lib/api'
 import { clsx } from 'clsx'
 import { useState } from 'react'
@@ -43,11 +44,16 @@ export default function AppLayout() {
 
   const links = isEmployer ? employerLinks : seekerLinks
 
-  const toggleLang = async () => {
+  const toggleLang = () => {
     const next = i18n.language === 'en' ? 'fr' : 'en'
     i18n.changeLanguage(next)
     localStorage.setItem('nexawork_lang', next)
-    try { await api.put('/auth/language', { lang: next }) } catch {}
+    // Save to API silently — don't block UI or show errors
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.access_token) {
+        api.put('/auth/language', { lang: next }).catch(() => {})
+      }
+    })
   }
 
   const displayName = isEmployer
