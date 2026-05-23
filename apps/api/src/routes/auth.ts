@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { authenticate } from '../middleware/authenticate.js'
 import { supabase } from '../lib/supabase.js'
+import { sendWelcomeEmail } from '../services/email.js'
 
 export async function authRoutes(app: FastifyInstance) {
 
@@ -25,6 +26,10 @@ export async function authRoutes(app: FastifyInstance) {
       profile = data
     }
 
+    // Send welcome email on first login (new user — no existing profile)
+    if (!profile && user) {
+      sendWelcomeEmail(email, '', role as any).catch(() => {})
+    }
     return reply.send({ user: user || { id, email, role, lang_preference: 'en' }, profile })
   })
 

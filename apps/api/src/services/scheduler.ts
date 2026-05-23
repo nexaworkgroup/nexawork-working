@@ -1,6 +1,7 @@
 import cron from 'node-cron'
 import { runAggregationPipeline, expireOldJobs } from './scraper/pipeline.js'
 import { embedMissingJobs } from './scraper/embedder.js'
+import { processJobAlerts } from './alerts.js'
 
 let isRunning = false
 
@@ -20,6 +21,13 @@ export function startScheduler() {
     } finally {
       isRunning = false
     }
+  })
+
+  // ── Daily at 8:00 AM: process job alerts ──────────────────────────
+  cron.schedule('0 8 * * *', async () => {
+    try {
+      await processJobAlerts()
+    } catch (e) { console.error('[Scheduler] Job alerts error:', e) }
   })
 
   // ── Daily at 3:00 AM: expire old jobs ────────────────────────────

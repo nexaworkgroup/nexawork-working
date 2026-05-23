@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { requireRole } from '../middleware/authenticate.js'
+import { sendStatusUpdateEmail } from '../services/email.js'
 import { supabase } from '../lib/supabase.js'
 
 export async function employerRoutes(app: FastifyInstance) {
@@ -126,6 +127,14 @@ export async function employerRoutes(app: FastifyInstance) {
       } catch (e) {
         console.error('[Notif] Error (non-fatal):', e)
       }
+
+      // Send email notification (non-blocking)
+      try {
+        const { data: seekerUser } = await supabase.from('users').select('email').eq('id', seekerProfile?.user_id).single()
+        if (seekerUser?.email) {
+          sendStatusUpdateEmail(seekerUser.email, seekerProfile?.full_name || '', jobTitle, companyName, status).catch(() => {})
+        }
+      } catch {}
 
       return reply.send({ application: data })
     } catch (e: any) {

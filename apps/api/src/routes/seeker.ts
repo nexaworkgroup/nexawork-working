@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { requireRole } from '../middleware/authenticate.js'
 import { supabase } from '../lib/supabase.js'
 import OpenAI from 'openai'
+import { sendApplicationConfirmation } from '../services/email.js'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 

@@ -1,7 +1,5 @@
 import axios from 'axios'
-import {
-  RawJob, inferJobType, inferLevel, inferRemote, normaliseDate, stripHtml
-} from './normalizer.js'
+import { RawJob, inferJobType, inferLevel, inferRemote, normaliseDate, stripHtml } from './normalizer.js'
 
 const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY || ''
 const BASE_URL = 'https://jsearch.p.rapidapi.com/search'
@@ -23,85 +21,84 @@ interface JSearchResult {
   job_posted_at_datetime_utc: string | null
 }
 
-// Queries to run on each scrape cycle (Africa + global entry-level)
 const SEARCH_QUERIES = [
-  { query: 'jobs in Cameroon', location: 'Cameroon' },
-  { query: 'software developer Cameroon', location: 'Cameroon' },
-  { query: 'jobs in Douala', location: 'Douala Cameroon' },
-  { query: 'jobs in Yaoundé', location: 'Yaounde Cameroon' },
-  { query: 'graduate trainee Africa', location: 'Africa' },
-  { query: 'internship Cameroon', location: 'Cameroon' },
-  { query: 'junior developer Africa remote', location: '' },
-  { query: 'marketing jobs Cameroon', location: 'Cameroon' },
-  { query: 'finance accounting Cameroon', location: 'Cameroon' },
-  { query: 'NGO jobs Cameroon', location: 'Cameroon' },
+  { query: 'jobs in Cameroon',              location: 'Cameroon' },
+  { query: 'software developer Cameroon',   location: 'Cameroon' },
+  { query: 'jobs in Douala',                location: 'Douala Cameroon' },
+  { query: 'jobs in Yaoundé',               location: 'Yaoundé Cameroon' },
+  { query: 'graduate trainee Africa',       location: 'Africa' },
+  { query: 'internship Cameroon',           location: 'Cameroon' },
+  { query: 'junior developer Africa remote', location: 'Africa' },
+  { query: 'marketing jobs Cameroon',       location: 'Cameroon' },
+  { query: 'finance accounting Cameroon',   location: 'Cameroon' },
+  { query: 'NGO jobs Cameroon',             location: 'Cameroon' },
 ]
 
-export async function scrapeJSearch(): Promise<RawJob[]> {
-  if (!RAPIDAPI_KEY) {
-    console.warn('[JSearch] RAPIDAPI_KEY not set — skipping')
+export async function fetchJSearchJobs(): Promise<RawJob[]> {
+  if (!RAPIDAPI_KEY || RAPIDAPI_KEY === 'your_rapidapi_key_here') {
+    console.warn('[JSearch] No API key configured — skipping JSearch')
     return []
   }
 
-  const all: RawJob[] = []
+  const results: RawJob[] = []
+  let successCount = 0
+  let failCount = 0
 
   for (const { query, location } of SEARCH_QUERIES) {
     try {
-      const params: Record<string, string> = {
-        query,
-        page: '1',
-        num_pages: '1',
-        date_posted: 'month',
-        language: 'en'
-      }
-      if (location) params.country = location
-
       const { data } = await axios.get(BASE_URL, {
-        params,
+        params: { query, location, num_pages: '1', date_posted: 'week' },
         headers: {
           'X-RapidAPI-Key': RAPIDAPI_KEY,
           'X-RapidAPI-Host': 'jsearch.p.rapidapi.com'
         },
-        timeout: 15_000
+        timeout: 10000
       })
 
-      const results: JSearchResult[] = data?.data || []
+      const jobs: JSearchResult[] = data?.data || []
+      successCount++
 
-      for (const job of results) {
-        if (!job.job_title || !job.employer_name || !job.job_apply_link) continue
-
-        const location = [job.job_city, job.job_country].filter(Boolean).join(', ')
-        const description = stripHtml(job.job_description)
-
-        all.push({
-          title: job.job_title.trim(),
-          company_name: job.employer_name.trim(),
-          location: location || null,
-          is_remote: job.job_is_remote || inferRemote(job.job_title, description),
-          job_type: inferJobType(job.job_title, description),
-          experience_level: inferLevel(job.job_title, description),
-          description,
-          requirements: job.job_required_skills?.join(', ') || null,
-          salary_min: job.job_min_salary ?? null,
-          salary_max: job.job_max_salary ?? null,
-          salary_currency: job.job_salary_currency || 'XAF',
-          tags: job.job_required_skills?.slice(0, 10) || [],
-          external_url: job.job_apply_link,
-          external_id: job.job_id,
+      for (const j of jobs) {
+        if (!j.job_title || !j.employer_name) continue
+        results.push({
+          external_id: `jsearch_${j.job_id}`,
+          title: j.job_title,
+          company_name: j.employer_name,
+          location: [j.job_city, j.job_country].filter(Boolean).join(', ') || 'Cameroon',
+          is_remote: j.job_is_remote || inferRemote(j.job_title + ' ' + (j.job_description || '')),
+          job_type: inferJobType(j.job_employment_type || ''),
+          experience_level: inferLevel(j.job_title + ' ' + (j.job_description || '')),
+          description: stripHtml(j.job_description || '').slice(0, 2000),
+          requirements: null,
+          tags: j.job_required_skills?.slice(0, 10) || [],
+          salary_min: j.job_min_salary,
+          salary_max: j.job_max_salary,
+          salary_currency: j.job_salary_currency || 'USD',
+          external_url: j.job_apply_link,
           source: 'jsearch',
-          posted_at: normaliseDate(job.job_posted_at_datetime_utc)
+          posted_at: normaliseDate(j.job_posted_at_datetime_utc),
         })
       }
 
-      // Rate limit — JSearch allows ~1 req/sec on free tier
-      await delay(1200)
+      // Rate limit: wait 1.5s between requests
+      await new Promise(r => setTimeout(r, 1500))
+
     } catch (err: any) {
-      console.error(`[JSearch] Query "${query}" failed:`, err.message)
+      failCount++
+      const status = err?.response?.status
+      const msg = status === 429 ? 'Rate limited' : status === 403 ? 'Invalid API key' : err.message
+      console.warn(`[JSearch] Query "${query}" failed: ${msg}`)
+
+      // Stop on auth errors — no point continuing
+      if (status === 403) {
+        console.error('[JSearch] API key invalid — stopping JSearch queries')
+        break
+      }
+      // On rate limit, wait longer
+      if (status === 429) await new Promise(r => setTimeout(r, 5000))
     }
   }
 
-  console.log(`[JSearch] Fetched ${all.length} jobs`)
-  return all
+  console.log(`[JSearch] Fetched ${results.length} jobs (${successCount} ok, ${failCount} failed)`)
+  return results
 }
-
-const delay = (ms: number) => new Promise(r => setTimeout(r, ms))
