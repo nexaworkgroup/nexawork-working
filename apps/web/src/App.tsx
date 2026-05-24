@@ -29,6 +29,9 @@ import EmployerJobsPage from './pages/employer/Jobs'
 import FloatingChat from './components/FloatingChat'
 import AdminDashboardPage from './pages/admin/Dashboard'
 import SkillGapPage from './pages/SkillGap'
+import SalaryInsightsPage from './pages/SalaryInsights'
+import EmployerAnalyticsPage from './pages/employer/Analytics'
+import EmployerVerificationPage from './pages/employer/Verification'
 import JobAlertsPage from './pages/JobAlerts'
 import InterviewsPage from './pages/Interviews'
 import CompanyProfilePage from './pages/CompanyProfile'
@@ -148,6 +151,7 @@ export default function App() {
             <Route path="/cv-builder" element={<CVBuilderPage />} />
           <Route path="/skill-gap" element={<SkillGapPage />} />
           <Route path="/job-alerts" element={<JobAlertsPage />} />
+          <Route path="/salary-insights" element={<SalaryInsightsPage />} />
           <Route path="/interviews" element={<InterviewsPage />} />
           </Route>
 
@@ -160,6 +164,8 @@ export default function App() {
             <Route path="/employer/jobs/:jobId/candidates" element={<CandidatesPage />} />
             <Route path="/employer/applicants" element={<ApplicantsPage />} />
           <Route path="/employer/interviews" element={<EmployerInterviewsPage />} />
+          <Route path="/employer/analytics" element={<EmployerAnalyticsPage />} />
+          <Route path="/employer/verification" element={<EmployerVerificationPage />} />
           <Route path="/employer/interviews/schedule/:appId" element={<ScheduleInterviewPage />} />
           </Route>
 

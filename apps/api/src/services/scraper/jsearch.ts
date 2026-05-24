@@ -102,3 +102,6 @@ export async function fetchJSearchJobs(): Promise<RawJob[]> {
   console.log(`[JSearch] Fetched ${results.length} jobs (${successCount} ok, ${failCount} failed)`)
   return results
 }
+
+// Alias for pipeline compatibility
+export const scrapeJSearch = fetchJSearchJobs

@@ -18,7 +18,10 @@
     "company_profile": "Profil Entreprise",
     "notifications": "Notifications",
     "job_alerts": "Alertes Emploi",
-    "interviews": "Entretiens"
+    "interviews": "Entretiens",
+    "salary_insights": "Salaires",
+    "analytics": "Analytiques",
+    "verification": "Vérification"
   },
   "landing": {
     "hero_title": "Votre Premier Emploi",

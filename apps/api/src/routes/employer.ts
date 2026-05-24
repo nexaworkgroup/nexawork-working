@@ -143,6 +143,26 @@ export async function employerRoutes(app: FastifyInstance) {
     }
   })
 
+  // POST /employer/verification-request
+  app.post('/employer/verification-request', { preHandler: requireRole('employer') }, async (request, reply) => {
+    const { id } = request.user!
+    const body = request.body as any
+
+    // Store verification request in notifications table for admin review
+    await supabase.from('notifications').insert({
+      user_id: id,
+      type: 'application',
+      title: '⏳ Verification Under Review',
+      message: `Your verification request for ${body.company_name} has been submitted and is under review. We'll notify you within 2-3 business days.`,
+      is_read: false
+    })
+
+    // Log for admin (could send email to admin too)
+    console.log('[Verification Request]', { user_id: id, ...body })
+
+    return reply.status(201).send({ success: true, message: 'Verification request submitted' })
+  })
+
   // GET /employer/analytics
   app.get('/employer/analytics', { preHandler: requireRole('employer') }, async (request, reply) => {
     const { id } = request.user!

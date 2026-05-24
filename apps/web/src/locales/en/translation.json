@@ -18,7 +18,10 @@
     "company_profile": "Company Profile",
     "notifications": "Notifications",
     "job_alerts": "Job Alerts",
-    "interviews": "Interviews"
+    "interviews": "Interviews",
+    "salary_insights": "Salary Insights",
+    "analytics": "Analytics",
+    "verification": "Get Verified"
   },
   "landing": {
     "hero_title": "Your First Job",

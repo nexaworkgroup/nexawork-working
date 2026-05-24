@@ -44,6 +44,61 @@ export async function jobsRoutes(app: FastifyInstance) {
     })
   })
 
+  // GET /jobs/salary-insights
+  app.get('/jobs/salary-insights', async (request, reply) => {
+    const { title, location } = request.query as { title: string; location?: string }
+    if (!title) return reply.status(400).send({ error: 'title is required' })
+
+    let query = supabase.from('jobs')
+      .select('salary_min, salary_max, salary_currency, title, location')
+      .eq('is_active', true)
+      .ilike('title', `%${title}%`)
+      .not('salary_min', 'is', null)
+
+    if (location) query = query.ilike('location', `%${location}%`)
+
+    const { data: salaryJobs } = await query.limit(100)
+
+    // Total matching jobs (with or without salary)
+    let totalQuery = supabase.from('jobs').select('*', { count: 'exact', head: true })
+      .eq('is_active', true).ilike('title', `%${title}%`)
+    if (location) totalQuery = totalQuery.ilike('location', `%${location}%`)
+    const { count: totalJobs } = await totalQuery
+
+    if (!salaryJobs?.length) {
+      return reply.send({ insights: null, total: totalJobs || 0 })
+    }
+
+    // Convert all to XAF for comparison (rough rates)
+    const toXAF = (amount: number, currency: string) => {
+      const rates: Record<string, number> = { XAF: 1, USD: 620, EUR: 670, GBP: 780 }
+      return amount * (rates[currency] || 1)
+    }
+
+    const salaries = salaryJobs
+      .filter(j => j.salary_min && j.salary_min > 0)
+      .map(j => toXAF(j.salary_min!, j.salary_currency || 'XAF'))
+      .sort((a, b) => a - b)
+
+    if (!salaries.length) return reply.send({ insights: null, total: totalJobs || 0 })
+
+    const min = Math.round(salaries[0])
+    const max = Math.round(salaries[salaries.length - 1])
+    const median = Math.round(salaries[Math.floor(salaries.length / 2)])
+    const medianPct = max > min ? Math.round(((median - min) / (max - min)) * 100) : 50
+
+    return reply.send({
+      insights: {
+        title,
+        location: location || 'Africa',
+        min, max, median, medianPct,
+        jobCount: salaries.length,
+        totalJobs: totalJobs || 0,
+        currency: 'XAF'
+      }
+    })
+  })
+
   // GET /jobs/:id
   app.get('/jobs/:id', async (request, reply) => {
     const { id } = request.params as { id: string }

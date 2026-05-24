@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import {
   LayoutDashboard, Briefcase, FileText, Bookmark,
   User, LogOut, Globe, Users, PlusCircle,
-  MessageSquare, FilePlus2, Target, Bell, Calendar
+  MessageSquare, FilePlus2, Target, Bell, Calendar, DollarSign, BarChart2, Shield
 } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 import { supabase } from '../../lib/supabase'
@@ -27,6 +27,7 @@ export default function AppLayout() {
     { to: '/cv-builder',   icon: FilePlus2,       label: t('nav.build_cv') },
     { to: '/skill-gap',    icon: Target,          label: t('nav.skill_gap') },
     { to: '/job-alerts',   icon: Bell,            label: t('nav.job_alerts') },
+    { to: '/salary-insights', icon: DollarSign,     label: t('nav.salary_insights') },
     { to: '/interviews',   icon: Calendar,        label: t('nav.interviews') },
     { to: '/chat',         icon: MessageSquare,   label: t('nav.chat') },
     { to: '/profile',      icon: User,            label: t('nav.profile') },
@@ -38,6 +39,8 @@ export default function AppLayout() {
     { to: '/employer/jobs/new',   icon: PlusCircle,      label: t('nav.post_job') },
     { to: '/employer/applicants', icon: Users,           label: t('nav.applicants') },
     { to: '/employer/interviews', icon: Calendar,        label: t('nav.interviews') },
+    { to: '/employer/analytics',  icon: BarChart2,       label: t('nav.analytics') },
+    { to: '/employer/verification', icon: Shield,         label: t('nav.verification') },
     { to: '/chat',                icon: MessageSquare,   label: t('nav.chat') },
     { to: '/profile',             icon: User,            label: t('nav.company_profile') },
   ]

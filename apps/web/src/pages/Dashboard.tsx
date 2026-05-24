@@ -8,6 +8,7 @@ import { useAuthStore } from '../store/authStore'
 import JobCard, { Job } from '../components/jobs/JobCard'
 import ApplyModal from '../components/jobs/ApplyModal'
 import { JobCardSkeletonGrid } from '../components/ui/Skeleton'
+import ProfileScore from '../components/ProfileScore'
 
 export default function DashboardPage() {
   const { t } = useTranslation()
@@ -83,6 +84,13 @@ export default function DashboardPage() {
           <button onClick={() => navigate('/profile')} className="text-xs font-medium text-brand-green hover:underline flex-shrink-0">
             Improve →
           </button>
+        </div>
+      )}
+
+      {/* Profile Score */}
+      {strength < 80 && (
+        <div className="mb-6">
+          <ProfileScore />
         </div>
       )}
 
