@@ -19,6 +19,8 @@ import ApplicationsPage from './pages/Applications'
 import SavedJobsPage from './pages/SavedJobs'
 import ChatPage from './pages/Chat'
 import ProfilePage from './pages/Profile'
+import PricingPage from './pages/Pricing'
+import CheckoutPage from './pages/Checkout'
 import CVBuilderPage from './pages/CVBuilder'
 import EmployerDashboard from './pages/employer/Dashboard'
 import PostJobPage from './pages/employer/PostJob'
@@ -171,6 +173,8 @@ export default function App() {
 
           <Route path="/company/:companyId" element={<CompanyProfilePage />} />
         <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/checkout/:planId" element={<CheckoutPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
