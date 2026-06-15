@@ -56,8 +56,8 @@ export default function AppLayout() {
     { to: '/dashboard',       icon: LayoutDashboard, label: t('nav.dashboard') },
     { to: '/jobs',            icon: Briefcase,       label: t('nav.jobs') },
     { to: '/applications',    icon: FileText,        label: t('nav.applications') },
-    { to: '/saved-jobs',      icon: Bookmark,        label: t('nav.saved') },
-    { to: '/cv-builder',      icon: FilePlus2,       label: t('nav.cv_builder') },
+    { to: '/saved',           icon: Bookmark,        label: t('nav.saved') },
+    { to: '/cv-builder',      icon: FilePlus2,       label: 'CV Builder' },
     { to: '/skill-gap',       icon: Target,          label: t('nav.skill_gap') },
     { to: '/job-alerts',      icon: Bell,            label: t('nav.job_alerts') },
     { to: '/salary-insights', icon: DollarSign,      label: t('nav.salary_insights') },
@@ -68,12 +68,12 @@ export default function AppLayout() {
   const employerNav = [
     { to: '/employer/dashboard',    icon: LayoutDashboard, label: t('nav.dashboard') },
     { to: '/employer/jobs',         icon: Briefcase,       label: t('nav.my_jobs') },
-    { to: '/employer/post-job',     icon: PlusCircle,      label: t('nav.post_job') },
+    { to: '/employer/jobs/new',     icon: PlusCircle,      label: t('nav.post_job') },
     { to: '/employer/applicants',   icon: Users,           label: t('nav.applicants') },
     { to: '/employer/interviews',   icon: Calendar,        label: t('nav.interviews') },
     { to: '/employer/analytics',    icon: BarChart2,       label: t('nav.analytics') },
     { to: '/employer/verification', icon: Shield,          label: t('nav.verification') },
-    { to: '/employer/profile',      icon: User,            label: t('nav.profile') },
+    { to: '/profile',               icon: User,            label: t('nav.profile') },
   ]
 
   const navItems = isSeeker ? seekerNav : employerNav
