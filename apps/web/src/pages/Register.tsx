@@ -89,7 +89,7 @@ export default function RegisterPage() {
             ]).map(({ val, icon: Icon, label, desc }) => (
               <button key={val} type="button" onClick={() => setRole(val)}
                 className={clsx('flex flex-col items-center p-4 rounded-xl border-2 transition-all text-center',
-                  role === val ? 'border-brand-green bg-brand-green-light' : 'border-gray-200 hover:border-gray-300')}>
+                  role === val ? 'border-brand-green bg-brand-green-light' : 'border-[var(--border)] hover:border-gray-300')}>
                 <Icon size={22} className={role === val ? 'text-brand-green' : 'text-gray-400'} />
                 <span className={clsx('text-sm font-semibold mt-1.5', role === val ? 'text-brand-green' : 'text-gray-700')}>{label}</span>
                 <span className="text-xs text-gray-400 mt-0.5">{desc}</span>

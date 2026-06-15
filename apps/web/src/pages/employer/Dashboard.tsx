@@ -71,7 +71,7 @@ export default function EmployerDashboard() {
           </div>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
             {[
-              { key: 'applied',     label: 'Applied',      color: 'bg-gray-50 text-gray-700' },
+              { key: 'applied',     label: 'Applied',      color: 'bg-[var(--border-soft)] text-gray-700' },
               { key: 'viewed',      label: 'Viewed',       color: 'bg-blue-50 text-blue-700' },
               { key: 'shortlisted', label: 'Shortlisted',  color: 'bg-brand-gold-light text-brand-gold-dark' },
               { key: 'interview',   label: 'Interview',    color: 'bg-purple-50 text-purple-700' },
@@ -112,7 +112,7 @@ export default function EmployerDashboard() {
                   <p className="font-medium text-gray-900 text-sm truncate">{job.title}</p>
                   <p className="text-xs text-gray-400">{job.location} · {new Date(job.created_at).toLocaleDateString()}</p>
                 </div>
-                <span className={`badge text-xs ${job.is_active ? 'badge-green' : 'bg-gray-100 text-gray-500'}`}>
+                <span className={`badge text-xs ${job.is_active ? 'badge-green' : 'bg-[var(--border-soft)] text-gray-500'}`}>
                   {job.is_active ? 'Active' : 'Closed'}
                 </span>
                 <button onClick={() => navigate(`/employer/jobs/${job.id}/candidates`)}

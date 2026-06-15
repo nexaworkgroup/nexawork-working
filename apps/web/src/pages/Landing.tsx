@@ -60,7 +60,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
           <span className="text-2xl font-bold">
             <span className="text-brand-green">Nexa</span>
-            <span className="text-gray-900">Work</span>
+            <span className="text-[var(--text-primary)]">Work</span>
           </span>
           <div className="hidden md:flex items-center gap-6">
             <a href="#features" className="text-sm text-gray-500 hover:text-brand-green transition-colors">Features</a>
@@ -113,7 +113,7 @@ export default function LandingPage() {
           <p className="text-sm text-gray-400 mb-4">Trusted by graduates from leading institutions</p>
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm font-semibold text-gray-400">
             {['UB', 'ENSP', 'IUT Douala', 'ESSEC', 'FMSB', 'IRIC'].map(school => (
-              <span key={school} className="bg-white border border-gray-100 rounded-full px-4 py-1.5 shadow-sm">
+              <span key={school} className="bg-[var(--surface)] border border-gray-100 rounded-full px-4 py-1.5 shadow-sm">
                 {school}
               </span>
             ))}
@@ -172,7 +172,7 @@ export default function LandingPage() {
           </div>
           <div className="grid sm:grid-cols-2 gap-6">
             {FEATURES.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-card hover:shadow-card-hover transition-all">
+              <div key={title} className="bg-[var(--surface)] rounded-2xl p-6 border border-gray-100 shadow-card hover:shadow-card-hover transition-all">
                 <div className="w-12 h-12 bg-brand-green-light rounded-xl flex items-center justify-center mb-4">
                   <Icon size={22} className="text-brand-green" />
                 </div>
@@ -232,7 +232,7 @@ export default function LandingPage() {
           <p className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-8">Jobs from leading employers</p>
           <div className="flex flex-wrap justify-center gap-4">
             {COMPANIES.map(c => (
-              <div key={c} className="bg-white border border-gray-100 rounded-xl px-6 py-3 shadow-sm font-semibold text-gray-600">
+              <div key={c} className="bg-[var(--surface)] border border-gray-100 rounded-xl px-6 py-3 shadow-sm font-semibold text-gray-600">
                 {c}
               </div>
             ))}
@@ -307,7 +307,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="text-xl font-bold">
             <span className="text-brand-green">Nexa</span>
-            <span className="text-gray-900">Work</span>
+            <span className="text-[var(--text-primary)]">Work</span>
           </span>
           <p className="text-sm text-gray-400">© 2026 NexaWork · Built for Africa 🌍</p>
           <LanguageToggle />

@@ -8,7 +8,7 @@ const STATUS_STYLES: Record<string, string> = {
   scheduled:  'bg-blue-50 text-blue-600',
   confirmed:  'bg-brand-green-light text-brand-green',
   cancelled:  'bg-red-50 text-red-500',
-  completed:  'bg-gray-100 text-gray-500',
+  completed:  'bg-[var(--border-soft)] text-gray-500',
 }
 
 export default function InterviewsPage() {

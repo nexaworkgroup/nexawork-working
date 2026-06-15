@@ -106,7 +106,7 @@ export default function JobAlertsPage() {
                     className={clsx('flex-1 py-2 rounded-lg text-sm font-medium border transition-all',
                       form.frequency === f.value
                         ? 'bg-brand-green text-white border-brand-green'
-                        : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300')}>
+                        : 'bg-[var(--surface)] text-gray-500 border-gray-200 hover:border-gray-300')}>
                     {f.label}
                   </button>
                 ))}
@@ -143,13 +143,13 @@ export default function JobAlertsPage() {
             <div key={alert.id} className={clsx('card transition-all', !alert.is_active && 'opacity-60')}>
               <div className="flex items-start gap-3">
                 <div className={clsx('w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0',
-                  alert.is_active ? 'bg-brand-green-light' : 'bg-gray-100')}>
+                  alert.is_active ? 'bg-brand-green-light' : 'bg-[var(--border-soft)]')}>
                   <Bell size={16} className={alert.is_active ? 'text-brand-green' : 'text-gray-400'} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <p className="font-semibold text-gray-900 text-sm">{alert.keywords}</p>
-                    <span className={clsx('badge text-xs', alert.is_active ? 'badge-green' : 'bg-gray-100 text-gray-500')}>
+                    <span className={clsx('badge text-xs', alert.is_active ? 'badge-green' : 'bg-[var(--border-soft)] text-gray-500')}>
                       {alert.is_active ? '🟢 Active' : 'Paused'}
                     </span>
                     <span className="badge badge-gray text-xs capitalize">{alert.frequency}</span>

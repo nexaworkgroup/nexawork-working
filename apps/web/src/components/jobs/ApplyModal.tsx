@@ -38,7 +38,7 @@ export default function ApplyModal({ job, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl">
+      <div className="bg-[var(--surface)] rounded-2xl w-full max-w-md shadow-2xl">
         {done ? (
           <div className="p-8 text-center">
             <div className="w-16 h-16 bg-brand-green-light rounded-full flex items-center justify-center mx-auto mb-4">

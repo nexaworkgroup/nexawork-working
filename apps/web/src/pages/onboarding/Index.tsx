@@ -80,7 +80,7 @@ export default function OnboardingPage() {
       <div className="w-full max-w-lg">
         <div className="text-center mb-8">
           <span className="text-3xl font-bold">
-            <span className="text-brand-green">Nexa</span><span className="text-gray-900">Work</span>
+            <span className="text-brand-green">Nexa</span><span className="text-[var(--text-primary)]">Work</span>
           </span>
         </div>
 
@@ -98,7 +98,7 @@ export default function OnboardingPage() {
               <div key={i} className={clsx('w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-bold transition-all',
                 i + 1 < step ? 'border-brand-green bg-brand-green text-white'
                   : i + 1 === step ? 'border-brand-green text-brand-green bg-white'
-                  : 'border-gray-200 text-gray-300 bg-white'
+                  : 'border-[var(--border)] text-gray-300 bg-white'
               )}>
                 {i + 1 < step ? <CheckCircle size={14} /> : i + 1}
               </div>
@@ -162,7 +162,7 @@ export default function OnboardingPage() {
                               className={clsx('px-3 py-1.5 rounded-full text-sm border transition-all',
                                 selectedSkills.includes(skill.id)
                                   ? 'bg-brand-green text-white border-brand-green'
-                                  : 'bg-white text-gray-600 border-gray-200 hover:border-brand-green'
+                                  : 'bg-[var(--surface)] text-gray-600 border-gray-200 hover:border-brand-green'
                               )}>
                               {skill.name}
                             </button>

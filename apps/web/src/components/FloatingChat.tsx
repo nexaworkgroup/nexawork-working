@@ -69,7 +69,7 @@ export default function FloatingChat() {
 
   const headerColor = isEmployer ? 'bg-gray-900' : 'bg-brand-green'
   const fabColor = isEmployer
-    ? (open ? 'bg-gray-500 hover:bg-gray-600' : 'bg-gray-900 hover:bg-gray-800')
+    ? (open ? 'bg-[var(--border-soft)]0 hover:bg-gray-600' : 'bg-gray-900 hover:bg-gray-800')
     : (open ? 'bg-gray-700 hover:bg-gray-800' : 'bg-brand-green hover:bg-brand-green-dark')
 
   return (
@@ -118,7 +118,7 @@ export default function FloatingChat() {
                 <div className={clsx(
                   'max-w-[80%] px-3 py-2 rounded-xl text-sm leading-relaxed whitespace-pre-wrap',
                   msg.role === 'assistant'
-                    ? 'bg-gray-50 text-gray-800 rounded-tl-none'
+                    ? 'bg-[var(--border-soft)] text-gray-800 rounded-tl-none'
                     : `${isEmployer ? 'bg-gray-900' : 'bg-brand-green'} text-white rounded-tr-none`
                 )}>
                   {msg.content}
@@ -130,7 +130,7 @@ export default function FloatingChat() {
                 <div className={`w-6 h-6 rounded-full ${isEmployer ? 'bg-gray-900' : 'bg-brand-green'} flex items-center justify-center`}>
                   <Bot size={12} className="text-white" />
                 </div>
-                <div className="bg-gray-50 rounded-xl rounded-tl-none px-3 py-2">
+                <div className="bg-[var(--border-soft)] rounded-xl rounded-tl-none px-3 py-2">
                   <div className="flex gap-1 items-center h-4">
                     {[0, 150, 300].map(delay => (
                       <span key={delay} className={`w-1.5 h-1.5 ${isEmployer ? 'bg-gray-900' : 'bg-brand-green'} rounded-full animate-bounce`}
@@ -171,7 +171,7 @@ export default function FloatingChat() {
                 className="flex-1 text-sm bg-transparent outline-none" />
               <button onClick={() => send()} disabled={loading || !input.trim()}
                 className={clsx('disabled:opacity-30 transition-opacity',
-                  isEmployer ? 'text-gray-900' : 'text-brand-green'
+                  isEmployer ? 'text-[var(--text-primary)]' : 'text-brand-green'
                 )}>
                 <Send size={16} />
               </button>

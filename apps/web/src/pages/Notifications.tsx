@@ -22,7 +22,7 @@ const TYPE_CONFIG: Record<string, {
   remote_ready: { icon: Shield,        color: 'text-brand-green',bg: 'bg-brand-green-light',label: 'Remote Ready',  action: '/remote-ready' },
   interview_scheduled: { icon: Calendar, color: 'text-purple-600', bg: 'bg-purple-50',      label: 'Scheduled',     action: '/interviews' },
   chat:         { icon: MessageSquare, color: 'text-blue-500',   bg: 'bg-blue-50',          label: 'Message',       action: '/chat' },
-  default:      { icon: Info,          color: 'text-gray-500',   bg: 'bg-gray-100',         label: 'Info',          action: undefined },
+  default:      { icon: Info,          color: 'text-gray-500',   bg: 'bg-[var(--border-soft)]',         label: 'Info',          action: undefined },
 }
 
 function getConfig(type: string) {
@@ -129,7 +129,7 @@ export default function NotificationsPage() {
       {isLoading && (
         <div className="space-y-3">
           {[1,2,3,4].map(i => (
-            <div key={i} className="bg-white rounded-2xl p-4 flex items-start gap-3 animate-pulse">
+            <div key={i} className="bg-[var(--surface)] rounded-2xl p-4 flex items-start gap-3 animate-pulse">
               <div className="w-10 h-10 rounded-full bg-gray-100 flex-shrink-0" />
               <div className="flex-1 space-y-2">
                 <div className="h-3.5 bg-gray-100 rounded w-3/4" />
@@ -172,8 +172,8 @@ export default function NotificationsPage() {
                   className={clsx(
                     'w-full text-left flex items-start gap-3 p-4 rounded-2xl border transition-all',
                     isNew
-                      ? 'bg-white border-brand-green/20 shadow-sm hover:shadow-md'
-                      : 'bg-white border-gray-100 hover:border-gray-200'
+                      ? 'bg-[var(--surface)] border-brand-green/20 shadow-sm hover:shadow-md'
+                      : 'bg-[var(--surface)] border-gray-100 hover:border-gray-200'
                   )}
                 >
                   {/* Icon */}

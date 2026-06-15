@@ -19,7 +19,7 @@ function StepDot({ done, active, n }: { done: boolean; active: boolean; n: numbe
       'w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 transition-all',
       done   ? 'bg-brand-green text-white' :
       active ? 'bg-brand-green-light text-brand-green ring-2 ring-brand-green' :
-               'bg-gray-100 text-gray-400'
+               'bg-[var(--border-soft)] text-gray-400'
     )}>
       {done ? <CheckCircle size={18} /> : n}
     </div>
@@ -154,11 +154,11 @@ export default function RemoteReadyPage() {
             <p className="font-bold text-lg">Remote Ready Certified</p>
           </div>
           <div className="grid grid-cols-2 gap-3 text-sm">
-            <div className="bg-white/10 rounded-xl p-3">
+            <div className="bg-[var(--surface)]/10 rounded-xl p-3">
               <p className="text-white/70 text-xs mb-0.5">Avg Internet Speed</p>
               <p className="font-bold text-lg">{record.avg_speed_mbps} Mbps</p>
             </div>
-            <div className="bg-white/10 rounded-xl p-3">
+            <div className="bg-[var(--surface)]/10 rounded-xl p-3">
               <p className="text-white/70 text-xs mb-0.5">Power Backup</p>
               <p className="font-bold text-lg">Verified ✓</p>
             </div>
@@ -171,7 +171,7 @@ export default function RemoteReadyPage() {
 
       {/* Progress steps */}
       {!badgeActive && (
-        <div className="bg-gray-50 rounded-2xl p-4 mb-6">
+        <div className="bg-[var(--border-soft)] rounded-2xl p-4 mb-6">
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Your Progress</p>
           <div className="flex items-center gap-2">
             <StepDot done={step1Done} active={!step1Done} n={1} />
@@ -189,8 +189,8 @@ export default function RemoteReadyPage() {
       )}
 
       {/* STEP 1 — Speed Test */}
-      <div className={clsx('bg-white border rounded-2xl p-5 mb-4 transition-all',
-        step1Done ? 'border-brand-green/30' : 'border-gray-100 shadow-sm')}>
+      <div className={clsx('bg-[var(--surface)] border rounded-2xl p-5 mb-4 transition-all',
+        step1Done ? 'border-brand-green/30' : 'border-[var(--border)] shadow-sm')}>
         <div className="flex items-start gap-3 mb-4">
           <div className={clsx('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0',
             step1Done ? 'bg-brand-green text-white' : 'bg-brand-green-light text-brand-green')}>
@@ -217,7 +217,7 @@ export default function RemoteReadyPage() {
                 'flex-1 rounded-xl p-2.5 text-center text-xs border transition-all',
                 session
                   ? 'bg-brand-green-light border-brand-green/30 text-brand-green'
-                  : 'bg-gray-50 border-gray-100 text-gray-400'
+                  : 'bg-[var(--border-soft)] border-gray-100 text-gray-400'
               )}>
                 <div className="font-bold mb-0.5">
                   {session ? `${session.speed_mbps}` : '--'}
@@ -259,9 +259,9 @@ export default function RemoteReadyPage() {
       </div>
 
       {/* STEP 2 — Power Backup Video */}
-      <div className={clsx('bg-white border rounded-2xl p-5 mb-4 transition-all',
+      <div className={clsx('bg-[var(--surface)] border rounded-2xl p-5 mb-4 transition-all',
         !step1Done ? 'opacity-60 pointer-events-none border-gray-100' :
-        step2Done  ? 'border-brand-green/30' : 'border-gray-100 shadow-sm')}>
+        step2Done  ? 'border-brand-green/30' : 'border-[var(--border)] shadow-sm')}>
         <div className="flex items-start gap-3 mb-4">
           <div className={clsx('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0',
             step2Done ? 'bg-brand-green text-white' :
@@ -293,7 +293,7 @@ export default function RemoteReadyPage() {
 
         {/* Video requirements */}
         {!step2Done && !step2Pending && step1Done && (
-          <div className="bg-gray-50 rounded-xl p-3 mb-4 text-xs text-gray-600 space-y-1">
+          <div className="bg-[var(--border-soft)] rounded-xl p-3 mb-4 text-xs text-gray-600 space-y-1">
             {[
               'Show the power backup equipment clearly',
               'Demonstrate it is switched on and working',
@@ -318,7 +318,7 @@ export default function RemoteReadyPage() {
         {!step2Done && !step2Pending && step1Done && (
           <label className={clsx('flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-semibold cursor-pointer transition-all',
             uploading
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              ? 'bg-[var(--border-soft)] text-gray-400 cursor-not-allowed'
               : 'bg-brand-gold text-white hover:bg-brand-gold/90')}>
             {uploading
               ? <><RefreshCw size={16} className="animate-spin" />Uploading…</>
@@ -329,12 +329,12 @@ export default function RemoteReadyPage() {
       </div>
 
       {/* STEP 3 — Badge */}
-      <div className={clsx('bg-white border rounded-2xl p-5 transition-all',
+      <div className={clsx('bg-[var(--surface)] border rounded-2xl p-5 transition-all',
         !step2Done ? 'opacity-60 border-gray-100' :
-        allDone    ? 'border-brand-green/30' : 'border-gray-100 shadow-sm')}>
+        allDone    ? 'border-brand-green/30' : 'border-[var(--border)] shadow-sm')}>
         <div className="flex items-start gap-3">
           <div className={clsx('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0',
-            allDone ? 'bg-brand-green text-white' : 'bg-gray-100 text-gray-400')}>
+            allDone ? 'bg-brand-green text-white' : 'bg-[var(--border-soft)] text-gray-400')}>
             <Shield size={18} />
           </div>
           <div>

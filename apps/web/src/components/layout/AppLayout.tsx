@@ -10,6 +10,7 @@ import {
   Globe, Users, PlusCircle, MessageSquare, FilePlus2, Target,
   Bell, Calendar, DollarSign, BarChart2, Shield, ChevronLeft, Menu
 } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
 import { api } from '../../lib/api'
 import { clsx } from 'clsx'
 

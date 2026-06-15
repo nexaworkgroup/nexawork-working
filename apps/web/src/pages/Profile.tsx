@@ -285,7 +285,7 @@ export default function ProfilePage() {
                       className={`px-3 py-1.5 rounded-full text-sm border transition-all ${
                         selectedSkills.includes(skill.id)
                           ? 'bg-brand-green text-white border-brand-green'
-                          : 'bg-white text-gray-600 border-gray-200 hover:border-brand-green'
+                          : 'bg-[var(--surface)] text-gray-600 border-gray-200 hover:border-brand-green'
                       }`}>
                       {skill.name}
                     </button>

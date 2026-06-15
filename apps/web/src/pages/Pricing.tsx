@@ -89,9 +89,9 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <div className="bg-white border-b border-gray-100 px-4 py-4 flex items-center justify-between">
+      <div className="bg-[var(--surface)] border-b border-gray-100 px-4 py-4 flex items-center justify-between">
         <Link to={user ? (user.role === 'employer' ? '/employer/dashboard' : '/dashboard') : '/'}>
-          <span className="text-xl font-bold"><span className="text-brand-green">Nexa</span><span className="text-gray-900">Work</span></span>
+          <span className="text-xl font-bold"><span className="text-brand-green">Nexa</span><span className="text-[var(--text-primary)]">Work</span></span>
         </Link>
         {!user && (
           <div className="flex gap-2">
@@ -137,18 +137,18 @@ export default function PricingPage() {
             const price = plan.price[billing]
             const isFree = price === 0
             return (
-              <div key={plan.id} className={clsx('bg-white rounded-2xl border-2 overflow-hidden',
-                plan.popular ? 'border-brand-green ring-2 ring-brand-green/30' : 'border-gray-200')}>
-                <div className={clsx('px-6 py-5', plan.popular ? 'bg-brand-green' : 'bg-gray-50')}>
+              <div key={plan.id} className={clsx('bg-[var(--surface)] rounded-2xl border-2 overflow-hidden',
+                plan.popular ? 'border-brand-green ring-2 ring-brand-green/30' : 'border-[var(--border)]')}>
+                <div className={clsx('px-6 py-5', plan.popular ? 'bg-brand-green' : 'bg-[var(--border-soft)]')}>
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <Icon size={20} className={plan.popular ? 'text-brand-gold' : 'text-gray-500'} />
-                      <span className={clsx('font-bold text-lg', plan.popular ? 'text-white' : 'text-gray-900')}>{plan.name}</span>
+                      <span className={clsx('font-bold text-lg', plan.popular ? 'text-white' : 'text-[var(--text-primary)]')}>{plan.name}</span>
                     </div>
                     {plan.badge && <span className="bg-brand-gold text-white text-xs font-bold px-2.5 py-1 rounded-full">{plan.badge}</span>}
                   </div>
                   <div className="flex items-end gap-1">
-                    <span className={clsx('text-4xl font-bold', plan.popular ? 'text-white' : 'text-gray-900')}>
+                    <span className={clsx('text-4xl font-bold', plan.popular ? 'text-white' : 'text-[var(--text-primary)]')}>
                       {isFree ? 'Free' : price.toLocaleString()}
                     </span>
                     {!isFree && <span className={clsx('text-sm mb-1', plan.popular ? 'text-green-200' : 'text-gray-400')}>XAF/{billing === 'monthly' ? 'mo' : 'yr'}</span>}
@@ -170,7 +170,7 @@ export default function PricingPage() {
                   </ul>
                   <button onClick={() => !isFree && handleUpgrade(plan.id)} disabled={isFree}
                     className={clsx('w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all',
-                      isFree ? 'bg-gray-100 text-gray-400 cursor-default' :
+                      isFree ? 'bg-[var(--border-soft)] text-gray-400 cursor-default' :
                       plan.popular ? 'bg-brand-green text-white hover:opacity-90 shadow-lg shadow-brand-green/20' :
                       'border-2 border-gray-200 text-gray-600 hover:border-brand-green hover:text-brand-green')}>
                     {isFree ? 'Your current plan' : <><Crown size={15} />Get {plan.name}<ArrowRight size={15} /></>}
@@ -189,7 +189,7 @@ export default function PricingPage() {
               { name: 'Orange Money', emoji: '🟠', color: 'bg-orange-50 text-orange-600 border-orange-200' },
               { name: 'MTN MoMo',     emoji: '🟡', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
               { name: 'Visa / Mastercard', emoji: '💳', color: 'bg-blue-50 text-blue-600 border-blue-200' },
-              { name: 'Bank Transfer', emoji: '🏦', color: 'bg-gray-50 text-gray-600 border-gray-200' },
+              { name: 'Bank Transfer', emoji: '🏦', color: 'bg-[var(--border-soft)] text-gray-600 border-gray-200' },
             ].map(({ name, emoji, color }) => (
               <span key={name} className={clsx('flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium', color)}>
                 {emoji} {name}

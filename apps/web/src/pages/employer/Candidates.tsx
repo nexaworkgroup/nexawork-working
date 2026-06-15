@@ -6,7 +6,7 @@ import { clsx } from 'clsx'
 
 const STATUSES = ['applied','viewed','shortlisted','interview','offered','rejected']
 const STATUS_COLOURS: Record<string,string> = {
-  applied:'bg-gray-100 text-gray-600', viewed:'bg-blue-50 text-blue-600',
+  applied:'bg-[var(--border-soft)] text-gray-600', viewed:'bg-blue-50 text-blue-600',
   shortlisted:'bg-brand-gold-light text-brand-gold-dark', interview:'bg-purple-50 text-purple-600',
   offered:'bg-brand-green-light text-brand-green', rejected:'bg-red-50 text-red-500'
 }
@@ -94,7 +94,7 @@ export default function CandidatesPage() {
                         'px-3 py-1 rounded-full text-xs font-medium border transition-all',
                         app.status === s
                           ? STATUS_COLOURS[s] + ' border-current'
-                          : 'bg-white text-gray-400 border-gray-200 hover:border-gray-300'
+                          : 'bg-[var(--surface)] text-gray-400 border-gray-200 hover:border-gray-300'
                       )}>
                       {s.charAt(0).toUpperCase() + s.slice(1)}
                     </button>

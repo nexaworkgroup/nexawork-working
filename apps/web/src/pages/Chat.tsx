@@ -68,7 +68,7 @@ export default function ChatPage() {
             <div className={clsx(
               'max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap',
               msg.role === 'assistant'
-                ? 'bg-white border border-gray-100 text-gray-800 rounded-tl-none'
+                ? 'bg-[var(--surface)] border border-gray-100 text-gray-800 rounded-tl-none'
                 : 'bg-brand-green text-white rounded-tr-none'
             )}>
               {msg.content}
@@ -81,7 +81,7 @@ export default function ChatPage() {
             <div className="w-8 h-8 rounded-full bg-brand-green flex items-center justify-center">
               <Bot size={16} className="text-white" />
             </div>
-            <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3">
+            <div className="bg-[var(--surface)] border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3">
               <div className="flex gap-1.5 items-center h-5">
                 <span className="w-2 h-2 bg-brand-green rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                 <span className="w-2 h-2 bg-brand-green rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />

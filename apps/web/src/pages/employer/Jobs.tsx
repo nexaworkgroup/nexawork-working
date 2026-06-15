@@ -89,7 +89,7 @@ export default function EmployerJobsPage() {
             className={clsx('px-4 py-2 rounded-lg text-sm font-medium transition-all border',
               tab === key
                 ? 'bg-brand-green text-white border-brand-green'
-                : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'
+                : 'bg-[var(--surface)] text-gray-500 border-gray-200 hover:border-gray-300'
             )}>
             {label}
           </button>
@@ -126,7 +126,7 @@ export default function EmployerJobsPage() {
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <h3 className="font-semibold text-gray-900">{job.title}</h3>
                       <span className={clsx('badge text-xs',
-                        job.is_active ? 'badge-green' : 'bg-gray-100 text-gray-500'
+                        job.is_active ? 'badge-green' : 'bg-[var(--border-soft)] text-gray-500'
                       )}>
                         {job.is_active ? 'Active' : 'Closed'}
                       </span>

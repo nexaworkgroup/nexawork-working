@@ -56,6 +56,98 @@
   --shadow-card:  0 1px 3px rgba(0,0,0,0.3);
   --shadow-hover: 0 4px 16px rgba(26,122,74,0.2);
 }
+/* ── Dark mode: override hardcoded Tailwind gray/white classes ─ */
+/* This lets components use standard Tailwind classes and still    */
+/* respond correctly to dark mode without touching every file.     */
+
+.dark .bg-white        { background-color: var(--surface) !important; }
+.dark .bg-gray-50      { background-color: var(--border-soft) !important; }
+.dark .bg-gray-100     { background-color: var(--border-soft) !important; }
+.dark .bg-gray-200     { background-color: var(--border) !important; }
+
+.dark .text-gray-900   { color: var(--text-primary)   !important; }
+.dark .text-gray-800   { color: var(--text-primary)   !important; }
+.dark .text-gray-700   { color: var(--text-secondary) !important; }
+.dark .text-gray-600   { color: var(--text-secondary) !important; }
+.dark .text-gray-500   { color: var(--text-secondary) !important; }
+.dark .text-gray-400   { color: var(--text-muted)     !important; }
+.dark .text-gray-300   { color: var(--text-muted)     !important; }
+
+.dark .border-gray-50  { border-color: var(--border-soft) !important; }
+.dark .border-gray-100 { border-color: var(--border) !important; }
+.dark .border-gray-200 { border-color: var(--border) !important; }
+.dark .border-gray-300 { border-color: var(--border) !important; }
+
+.dark .divide-gray-100 > * + * { border-color: var(--border) !important; }
+.dark .divide-gray-200 > * + * { border-color: var(--border) !important; }
+
+/* Hover states */
+.dark .hover\:bg-gray-50:hover  { background-color: var(--border-soft) !important; }
+.dark .hover\:bg-gray-100:hover { background-color: var(--border) !important; }
+
+/* Form elements */
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark textarea,
+.dark select {
+  background-color: var(--bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+.dark input::placeholder,
+.dark textarea::placeholder { color: var(--text-muted) !important; }
+
+/* Modals and dropdowns that use bg-white */
+.dark [role="dialog"],
+.dark [role="menu"] {
+  background-color: var(--surface) !important;
+  border-color: var(--border) !important;
+}
+
+/* Shadow-2xl used on dropdowns/modals */
+.dark .shadow-2xl {
+  box-shadow: 0 25px 50px rgba(0,0,0,0.6) !important;
+}
+.dark .shadow-xl {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
+}
+.dark .shadow-lg {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4) !important;
+}
+
+/* MobileNav and floating elements */
+.dark nav.fixed.bottom-0 {
+  background-color: var(--surface) !important;
+  border-color: var(--border) !important;
+}
+
+/* Status badge colours — keep intentional */
+.dark .bg-green-50    { background-color: rgba(16,185,129,0.12) !important; }
+.dark .text-green-700 { color: #34d399 !important; }
+.dark .text-green-600 { color: #34d399 !important; }
+.dark .bg-blue-50     { background-color: rgba(59,130,246,0.12) !important; }
+.dark .text-blue-600  { color: #60a5fa !important; }
+.dark .text-blue-700  { color: #60a5fa !important; }
+.dark .bg-purple-50   { background-color: rgba(168,85,247,0.12) !important; }
+.dark .text-purple-600{ color: #c084fc !important; }
+.dark .bg-amber-50    { background-color: rgba(245,158,11,0.12) !important; }
+.dark .text-amber-700 { color: var(--brand-gold) !important; }
+.dark .text-amber-600 { color: var(--brand-gold) !important; }
+.dark .bg-red-50      { background-color: rgba(239,68,68,0.12) !important; }
+.dark .text-red-600   { color: #f87171 !important; }
+.dark .text-red-500   { color: #f87171 !important; }
+.dark .bg-orange-50   { background-color: rgba(249,115,22,0.12) !important; }
+.dark .text-orange-500{ color: #fb923c !important; }
+
+/* Line clamp and misc */
+.dark .ring-1 { --tw-ring-color: var(--border); }
+
+/* Gradient backgrounds in dark mode */
+.dark .from-white { --tw-gradient-from: var(--surface); }
+
+/* Tooltip dark bg stays dark */
+.dark .bg-gray-900 { background-color: #111827 !important; }
+.dark .text-white  { color: #ffffff !important; }
+
 
 /* ── Base ──────────────────────────────────────────────── */
 * { box-sizing: border-box; }

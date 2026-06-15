@@ -41,7 +41,7 @@ export default function JobCard({ job, onApply, onSaveToggle, compact }: JobCard
     ? 'bg-brand-green text-white'
     : score && score >= 50
     ? 'bg-brand-gold-light text-brand-gold-dark'
-    : 'bg-gray-100 text-gray-500'
+    : 'bg-[var(--border-soft)] text-gray-500'
 
   const handleSave = async (e: React.MouseEvent) => {
     e.stopPropagation()

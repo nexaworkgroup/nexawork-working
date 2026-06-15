@@ -116,7 +116,7 @@ export default function EmployerAnalyticsPage() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className={clsx('badge text-xs', job.active ? 'badge-green' : 'bg-gray-100 text-gray-500')}>
+                      <span className={clsx('badge text-xs', job.active ? 'badge-green' : 'bg-[var(--border-soft)] text-gray-500')}>
                         {job.active ? 'Active' : 'Closed'}
                       </span>
                       <span className="text-sm font-semibold text-gray-700 w-16 text-right">

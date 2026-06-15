@@ -9,7 +9,7 @@ import { ApplicationSkeleton } from '../components/ui/Skeleton'
 import { EmptyState } from '../components/ui/EmptyState'
 
 const STATUS_STYLES: Record<string, string> = {
-  applied:     'bg-gray-100 text-gray-600',
+  applied:     'bg-[var(--border-soft)] text-gray-600',
   viewed:      'bg-blue-50 text-blue-600',
   shortlisted: 'bg-brand-gold-light text-brand-gold-dark',
   interview:   'bg-purple-50 text-purple-600',
@@ -65,7 +65,7 @@ export default function ApplicationsPage() {
                 className={clsx('flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border',
                   filter === s
                     ? 'bg-brand-green text-white border-brand-green'
-                    : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'
+                    : 'bg-[var(--surface)] text-gray-500 border-gray-200 hover:border-gray-300'
                 )}>
                 {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)} ({count})
               </button>

@@ -11,7 +11,7 @@ const STATUS_STYLES: Record<string, string> = {
   scheduled:  'bg-blue-50 text-blue-600 border-blue-200',
   confirmed:  'bg-brand-green-light text-brand-green border-brand-green/30',
   cancelled:  'bg-red-50 text-red-500 border-red-200',
-  completed:  'bg-gray-100 text-gray-500 border-gray-200',
+  completed:  'bg-[var(--border-soft)] text-gray-500 border-gray-200',
 }
 const STATUS_LABELS: Record<string, string> = {
   scheduled: 'Scheduled', confirmed: 'Confirmed', cancelled: 'Cancelled', completed: 'Completed'
@@ -88,7 +88,7 @@ export default function EmployerInterviewsPage() {
         ] as { key: Tab; label: string }[]).map(({ key, label }) => (
           <button key={key} onClick={() => setTab(key)}
             className={clsx('px-4 py-2 rounded-lg text-sm font-medium transition-all border',
-              tab === key ? 'bg-brand-green text-white border-brand-green' : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'
+              tab === key ? 'bg-brand-green text-white border-brand-green' : 'bg-[var(--surface)] text-gray-500 border-gray-200 hover:border-gray-300'
             )}>
             {label}
           </button>
