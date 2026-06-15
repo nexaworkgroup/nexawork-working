@@ -1,18 +1,25 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { LayoutDashboard, Briefcase, FileText, MessageSquare, User, Users, PlusCircle } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 import { clsx } from 'clsx'
 
+// Pages where MobileNav must never appear
+const PUBLIC_PATHS = ['/', '/login', '/register', '/forgot-password', '/reset-password', '/pricing', '/terms', '/privacy']
+
 export default function MobileNav() {
   const { user } = useAuthStore()
-  if (!user) return null
+  const { pathname } = useLocation()
+
+  // Hide on public pages or when not logged in
+  const isPublicPage = PUBLIC_PATHS.includes(pathname) || pathname.startsWith('/jobs/')
+  if (!user || isPublicPage) return null
 
   const isEmployer = user.role === 'employer'
 
   const seekerLinks = [
     { to: '/dashboard',    icon: LayoutDashboard, label: 'Home' },
     { to: '/jobs',         icon: Briefcase,       label: 'Jobs' },
-    { to: '/applications', icon: FileText,         label: 'Applied' },
+    { to: '/applications', icon: FileText,        label: 'Applied' },
     { to: '/chat',         icon: MessageSquare,   label: 'AI' },
     { to: '/profile',      icon: User,            label: 'Profile' },
   ]
@@ -20,7 +27,7 @@ export default function MobileNav() {
   const employerLinks = [
     { to: '/employer/dashboard',  icon: LayoutDashboard, label: 'Home' },
     { to: '/employer/jobs/new',   icon: PlusCircle,      label: 'Post Job' },
-    { to: '/employer/applicants', icon: Users,            label: 'Applicants' },
+    { to: '/employer/applicants', icon: Users,           label: 'Applicants' },
     { to: '/chat',                icon: MessageSquare,   label: 'AI' },
     { to: '/profile',             icon: User,            label: 'Profile' },
   ]
