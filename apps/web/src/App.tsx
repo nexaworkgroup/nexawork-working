@@ -33,6 +33,7 @@ import AdminDashboardPage from './pages/admin/Dashboard'
 import SkillGapPage from './pages/SkillGap'
 import SalaryInsightsPage from './pages/SalaryInsights'
 import RemoteReadyPage from './pages/RemoteReady'
+import NotificationsPage from './pages/Notifications'
 import EmployerAnalyticsPage from './pages/employer/Analytics'
 import EmployerVerificationPage from './pages/employer/Verification'
 import JobAlertsPage from './pages/JobAlerts'
@@ -155,6 +156,7 @@ export default function App() {
           <Route path="/skill-gap" element={<SkillGapPage />} />
           <Route path="/job-alerts" element={<JobAlertsPage />} />
           <Route path="/remote-ready" element={<RemoteReadyPage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/salary-insights" element={<SalaryInsightsPage />} />
           <Route path="/interviews" element={<InterviewsPage />} />
           </Route>

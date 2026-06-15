@@ -1,22 +1,31 @@
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Bell, X, Briefcase, Zap, CheckCircle, Info } from 'lucide-react'
+import { Bell, X, Briefcase, Zap, CheckCircle, Info, Calendar, Trophy, Shield } from 'lucide-react'
 import { api } from '../lib/api'
 import { useAuthStore } from '../store/authStore'
 import { clsx } from 'clsx'
 
 const TYPE_ICONS: Record<string, any> = {
-  match:       Zap,
-  application: Briefcase,
-  status:      CheckCircle,
-  default:     Info,
+  match:        Zap,
+  application:  Briefcase,
+  status:       CheckCircle,
+  shortlisted:  CheckCircle,
+  interview:    Calendar,
+  offered:      Trophy,
+  remote_ready: Shield,
+  default:      Info,
 }
 
 const TYPE_COLORS: Record<string, string> = {
-  match:       'text-brand-gold bg-brand-gold-light',
-  application: 'text-blue-600 bg-blue-50',
-  status:      'text-brand-green bg-brand-green-light',
-  default:     'text-gray-500 bg-gray-100',
+  match:        'text-brand-gold bg-brand-gold-light',
+  application:  'text-blue-600 bg-blue-50',
+  status:       'text-brand-green bg-brand-green-light',
+  shortlisted:  'text-orange-500 bg-orange-50',
+  interview:    'text-purple-600 bg-purple-50',
+  offered:      'text-brand-gold bg-brand-gold-light',
+  remote_ready: 'text-brand-green bg-brand-green-light',
+  default:      'text-gray-500 bg-gray-100',
 }
 
 export default function NotificationBell() {
@@ -56,6 +65,7 @@ export default function NotificationBell() {
 
   const unread = countData?.count || 0
   const notifications = notifData?.notifications || []
+  const navigate = useNavigate()
 
   if (!user) return null
 
@@ -125,6 +135,14 @@ export default function NotificationBell() {
             )}
           </div>
         </div>
+          {/* View all link */}
+          <div className="px-4 py-2.5 border-t border-gray-100">
+            <button
+              onClick={() => { setOpen(false); navigate('/notifications') }}
+              className="text-xs text-brand-green hover:underline font-medium w-full text-center">
+              View all notifications →
+            </button>
+          </div>
       )}
     </div>
   )

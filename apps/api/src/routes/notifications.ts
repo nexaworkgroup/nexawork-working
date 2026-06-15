@@ -6,13 +6,22 @@ export async function notificationRoutes(app: FastifyInstance) {
   // GET /notifications
   app.get('/notifications', { preHandler: authenticate }, async (request, reply) => {
     const { id } = request.user!
+    const { limit = '30' } = request.query as { limit?: string }
     const { data } = await supabase
       .from('notifications')
       .select('*')
       .eq('user_id', id)
       .order('created_at', { ascending: false })
-      .limit(20)
+      .limit(Math.min(parseInt(limit) || 30, 100))
     return reply.send({ notifications: data || [] })
+  })
+
+  // DELETE /notifications/:id
+  app.delete('/notifications/:id', { preHandler: authenticate }, async (request, reply) => {
+    const { id: notifId } = request.params as { id: string }
+    const { id } = request.user!
+    await supabase.from('notifications').delete().eq('id', notifId).eq('user_id', id)
+    return reply.send({ success: true })
   })
 
   // GET /notifications/unread-count

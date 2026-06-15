@@ -103,12 +103,12 @@ export async function employerRoutes(app: FastifyInstance) {
           const jobTitle = jobRes.data?.title || 'the position'
           const companyName = jobRes.data?.company_name || 'The employer'
 
-          const messages: Record<string, { title: string; message: string }> = {
-            viewed:      { title: 'Application Viewed 👀',    message: `${companyName} viewed your application for ${jobTitle}` },
-            shortlisted: { title: "You're Shortlisted! 🌟",  message: `${companyName} shortlisted you for ${jobTitle}` },
-            interview:   { title: 'Interview Invitation 🎯',  message: `${companyName} wants to interview you for ${jobTitle}!` },
-            offered:     { title: 'Job Offer Received! 🎉',   message: `Congratulations! ${companyName} made you an offer for ${jobTitle}!` },
-            rejected:    { title: 'Application Update',       message: `${companyName} updated your application status for ${jobTitle}` },
+          const messages: Record<string, { title: string; message: string; type: string }> = {
+            viewed:      { type: 'application', title: 'Application Viewed 👀',      message: `${companyName} viewed your application for ${jobTitle}` },
+            shortlisted: { type: 'shortlisted', title: "You're Shortlisted! 🌟",    message: `Great news! ${companyName} shortlisted you for ${jobTitle}. Stay ready!` },
+            interview:   { type: 'interview',   title: 'Interview Invitation 🎯',    message: `${companyName} wants to interview you for ${jobTitle}! Check your applications for next steps.` },
+            offered:     { type: 'offered',     title: 'Job Offer Received! 🎉',     message: `Congratulations! ${companyName} made you an offer for ${jobTitle}. Log in to review it!` },
+            rejected:    { type: 'application', title: 'Application Status Update',  message: `${companyName} has reviewed your application for ${jobTitle}.` },
           }
 
           const notif = messages[status]
@@ -116,10 +116,11 @@ export async function employerRoutes(app: FastifyInstance) {
             Promise.resolve(
               supabase.from('notifications').insert({
                 user_id: seekerUserId,
-                type: ['offered', 'interview', 'shortlisted'].includes(status) ? 'status' : 'application',
-                title: notif.title,
+                type:    notif.type,
+                title:   notif.title,
                 message: notif.message,
-                is_read: false
+                is_read: false,
+                metadata: JSON.stringify({ job_title: jobTitle, company_name: companyName, status })
               })
             ).catch(e => console.error('[Notif] Failed:', e.message))
           }
