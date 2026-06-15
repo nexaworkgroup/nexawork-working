@@ -8,6 +8,7 @@ import { jobsRoutes } from './routes/jobs.js'
 import { seekerRoutes } from './routes/seeker.js'
 import { employerRoutes } from './routes/employer.js'
 import { aiRoutes } from './routes/ai.js'
+import { adminRoutes } from './routes/admin.js'
 import { startScheduler } from './services/scheduler.js'
 import { notificationRoutes } from './routes/notifications.js'
 import { adminRoutes } from './routes/admin.js'
@@ -15,6 +16,7 @@ import { alertRoutes } from './routes/alerts.js'
 import { interviewRoutes } from './routes/interviews.js'
 import { companyRoutes } from './routes/companies.js'
 import { subscriptionRoutes } from './routes/subscriptions.js'
+import { remoteReadyRoutes } from './routes/remoteReady.js'
 
 const app = Fastify({ logger: false })
 
@@ -57,6 +59,7 @@ async function main() {
   await app.register(interviewRoutes)
   await app.register(companyRoutes)
   await app.register(subscriptionRoutes)
+  await app.register(remoteReadyRoutes)
 
   app.setErrorHandler((error, _request, reply) => {
     console.error('API Error:', error)

@@ -60,7 +60,7 @@ export default function AppLayout() {
     { to: '/cv-builder',      icon: FilePlus2,       label: 'CV Builder' },
     { to: '/skill-gap',       icon: Target,          label: t('nav.skill_gap') },
     { to: '/job-alerts',      icon: Bell,            label: t('nav.job_alerts') },
-    { to: '/salary-insights', icon: DollarSign,      label: t('nav.salary_insights') },
+    { to: '/remote-ready',    icon: Shield,          label: 'Remote Ready' },
     { to: '/interviews',      icon: Calendar,        label: t('nav.interviews') },
     { to: '/profile',         icon: User,            label: t('nav.profile') },
   ]
