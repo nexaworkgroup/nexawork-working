@@ -59,7 +59,8 @@ export default function AppLayout() {
     { to: '/saved',           icon: Bookmark,        label: t('nav.saved') },
     { to: '/cv-builder',      icon: FilePlus2,       label: 'CV Builder' },
     { to: '/skill-gap',       icon: Target,          label: t('nav.skill_gap') },
-    { to: '/job-alerts',      icon: Bell,            label: t('nav.job_alerts') },
+    { to: '/notifications',   icon: Bell,            label: 'Notifications', badge: true },
+    { to: '/job-alerts',      icon: Target,          label: t('nav.job_alerts') },
     { to: '/remote-ready',    icon: Shield,          label: 'Remote Ready' },
     { to: '/interviews',      icon: Calendar,        label: t('nav.interviews') },
     { to: '/profile',         icon: User,            label: t('nav.profile') },
@@ -70,6 +71,7 @@ export default function AppLayout() {
     { to: '/employer/jobs',         icon: Briefcase,       label: t('nav.my_jobs') },
     { to: '/employer/jobs/new',     icon: PlusCircle,      label: t('nav.post_job') },
     { to: '/employer/applicants',   icon: Users,           label: t('nav.applicants') },
+    { to: '/notifications',         icon: Bell,            label: 'Notifications', badge: true },
     { to: '/employer/interviews',   icon: Calendar,        label: t('nav.interviews') },
     { to: '/employer/analytics',    icon: BarChart2,       label: t('nav.analytics') },
     { to: '/employer/verification', icon: Shield,          label: t('nav.verification') },
@@ -105,7 +107,7 @@ export default function AppLayout() {
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-2 px-2 space-y-0.5">
-        {navItems.map(({ to, icon: Icon, label }) => {
+        {navItems.map((item) => { const { to, icon: Icon, label } = item
           const active = to === (isSeeker ? '/dashboard' : '/employer/dashboard')
             ? location.pathname === to
             : location.pathname.startsWith(to)
@@ -122,16 +124,19 @@ export default function AppLayout() {
               {(!collapsed || mobile) && (
                 <span className="text-sm font-medium truncate flex-1">{label}</span>
               )}
-              {to === '/job-alerts' && unread > 0 && (!collapsed || mobile) && (
-                <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+              {item.badge && unread > 0 && (!collapsed || mobile) && (
+                <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                   {unread > 9 ? '9+' : unread}
                 </span>
+              )}
+              {collapsed && !mobile && item.badge && unread > 0 && (
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
               )}
               {collapsed && !mobile && (
                 <div className="absolute left-full ml-2 px-2.5 py-1.5 bg-gray-900 text-white text-xs rounded-lg
                                 opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 shadow-lg
                                 transition-opacity duration-150">
-                  {label}
+                  {label}{item.badge && unread > 0 ? ` (${unread})` : ''}
                 </div>
               )}
             </Link>
