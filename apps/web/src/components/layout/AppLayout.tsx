@@ -21,17 +21,16 @@ export default function AppLayout() {
   const { dark } = useDarkMode()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [unread, setUnread] = useState(0)
 
   useEffect(() => { setMobileOpen(false) }, [location.pathname])
 
-  useEffect(() => {
-    if (!user) return
-    const fetch = () => api.get('/notifications/unread-count').then(r => setUnread(r.data.count || 0)).catch(() => {})
-    fetch()
-    const id = setInterval(fetch, 30_000)
-    return () => clearInterval(id)
-  }, [user])
+  const { data: unreadData } = useQuery({
+    queryKey: ['notif-count'],
+    queryFn: () => api.get('/notifications/unread-count').then(r => r.data),
+    refetchInterval: 30_000,
+    enabled: !!user,
+  })
+  const unread = unreadData?.count || 0
 
   const toggleLang = () => {
     const next = i18n.language === 'en' ? 'fr' : 'en'
@@ -57,11 +56,11 @@ export default function AppLayout() {
     { to: '/jobs',            icon: Briefcase,       label: t('nav.jobs') },
     { to: '/applications',    icon: FileText,        label: t('nav.applications') },
     { to: '/saved',           icon: Bookmark,        label: t('nav.saved') },
-    { to: '/cv-builder',      icon: FilePlus2,       label: 'CV Builder' },
+    { to: '/cv-builder',      icon: FilePlus2,       label: t('nav.cv_builder') },
     { to: '/skill-gap',       icon: Target,          label: t('nav.skill_gap') },
-    { to: '/notifications',   icon: Bell,            label: 'Notifications', badge: true },
+    { to: '/notifications',   icon: Bell,            label: t('nav.notifications'), badge: true },
     { to: '/job-alerts',      icon: Target,          label: t('nav.job_alerts') },
-    { to: '/remote-ready',    icon: Shield,          label: 'Remote Ready' },
+    { to: '/remote-ready',    icon: Shield,          label: t('nav.remote_ready') },
     { to: '/interviews',      icon: Calendar,        label: t('nav.interviews') },
     { to: '/profile',         icon: User,            label: t('nav.profile') },
   ]
@@ -71,7 +70,7 @@ export default function AppLayout() {
     { to: '/employer/jobs',         icon: Briefcase,       label: t('nav.my_jobs') },
     { to: '/employer/jobs/new',     icon: PlusCircle,      label: t('nav.post_job') },
     { to: '/employer/applicants',   icon: Users,           label: t('nav.applicants') },
-    { to: '/notifications',         icon: Bell,            label: 'Notifications', badge: true },
+    { to: '/notifications',         icon: Bell,            label: t('nav.notifications'), badge: true },
     { to: '/employer/interviews',   icon: Calendar,        label: t('nav.interviews') },
     { to: '/employer/analytics',    icon: BarChart2,       label: t('nav.analytics') },
     { to: '/employer/verification', icon: Shield,          label: t('nav.verification') },
