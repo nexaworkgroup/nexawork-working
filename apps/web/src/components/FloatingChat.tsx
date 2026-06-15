@@ -73,7 +73,7 @@ export default function FloatingChat() {
     : (open ? 'bg-gray-700 hover:bg-gray-800' : 'bg-brand-green hover:bg-brand-green-dark')
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 flex flex-col items-end gap-3">
       {open && !minimized && (
         <div className="w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden"
           style={{ height: '480px' }}>
